@@ -15,7 +15,9 @@ If you want to build this using Xcode, make sure to set the development team bef
 # Screenshots:
 Main screen in light mode:
 ![lightscreenshot](https://user-images.githubusercontent.com/85067619/131271584-83945402-305f-4bbb-a07a-5c83141dc746.jpg)
+
 Main screen in dark mode:
 ![darkscreenshot](https://user-images.githubusercontent.com/85067619/131271596-8f67568e-9834-4d02-9463-2b5480dda5c2.jpg)
+
 Server running:
 ![running](https://user-images.githubusercontent.com/85067619/131271655-ca55bc95-cbaa-4fa0-b2d1-a41301625ff0.jpg)
