@@ -1,7 +1,7 @@
 # Minecraft-server-launcher
 Minecraft Server Launcher lets you have all your server(s) in one easy to use launcher.
 # Getting started:
-To get started, just use the instaler from the Releases and start the app. The first time you launch it, you will be asked if you agree to the Minecraft EULA (https://account.mojang.com/documents/minecraft_eula). To create your first server, use the "New Server" button.
+To get started, just use the installer from the Releases and start the app. The first time you launch it, you will be asked if you agree to the Minecraft EULA (https://account.mojang.com/documents/minecraft_eula). To create your first server, use the "New Server" button.
 # Launching your server:
 Just use the Launch server button and choose your server.
 # Editing your server:
