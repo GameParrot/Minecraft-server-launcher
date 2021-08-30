@@ -1,0 +1,351 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C46EA18426D57E6400BFD926 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46EA18326D57E6400BFD926 /* AppleScriptObjC.framework */; };
+		C46EA18726D57E6400BFD926 /* AppDelegate.applescript in Sources */ = {isa = PBXBuildFile; fileRef = C46EA18626D57E6400BFD926 /* AppDelegate.applescript */; };
+		C46EA18926D57E6400BFD926 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C46EA18826D57E6400BFD926 /* Assets.xcassets */; };
+		C46EA18C26D57E6500BFD926 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46EA18A26D57E6500BFD926 /* MainMenu.xib */; };
+		C46EA18F26D57E6500BFD926 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C46EA18E26D57E6500BFD926 /* main.m */; };
+		C46EA1BA26D5C5B900BFD926 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46EA1B926D5C5B900BFD926 /* WebKit.framework */; };
+		C46EA1BE26D842D100BFD926 /* MCServer.png in Resources */ = {isa = PBXBuildFile; fileRef = C46EA1BD26D842D100BFD926 /* MCServer.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C46EA18026D57E6400BFD926 /* Minecraft Server Launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Minecraft Server Launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C46EA18326D57E6400BFD926 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
+		C46EA18626D57E6400BFD926 /* AppDelegate.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = AppDelegate.applescript; sourceTree = "<group>"; };
+		C46EA18826D57E6400BFD926 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C46EA18B26D57E6500BFD926 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		C46EA18D26D57E6500BFD926 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C46EA18E26D57E6500BFD926 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C46EA1B926D5C5B900BFD926 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		C46EA1BD26D842D100BFD926 /* MCServer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MCServer.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C46EA17D26D57E6400BFD926 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C46EA1BA26D5C5B900BFD926 /* WebKit.framework in Frameworks */,
+				C46EA18426D57E6400BFD926 /* AppleScriptObjC.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C46EA17726D57E6400BFD926 = {
+			isa = PBXGroup;
+			children = (
+				C46EA18526D57E6400BFD926 /* Minecraft Server Launcher */,
+				C46EA18226D57E6400BFD926 /* Frameworks */,
+				C46EA18126D57E6400BFD926 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C46EA18126D57E6400BFD926 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C46EA18026D57E6400BFD926 /* Minecraft Server Launcher.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C46EA18226D57E6400BFD926 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C46EA1B926D5C5B900BFD926 /* WebKit.framework */,
+				C46EA18326D57E6400BFD926 /* AppleScriptObjC.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C46EA18526D57E6400BFD926 /* Minecraft Server Launcher */ = {
+			isa = PBXGroup;
+			children = (
+				C46EA18626D57E6400BFD926 /* AppDelegate.applescript */,
+				C46EA18826D57E6400BFD926 /* Assets.xcassets */,
+				C46EA18A26D57E6500BFD926 /* MainMenu.xib */,
+				C46EA1BD26D842D100BFD926 /* MCServer.png */,
+				C46EA18D26D57E6500BFD926 /* Info.plist */,
+				C46EA18E26D57E6500BFD926 /* main.m */,
+			);
+			path = "Minecraft Server Launcher";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C46EA17F26D57E6400BFD926 /* Minecraft Server Launcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C46EA19226D57E6500BFD926 /* Build configuration list for PBXNativeTarget "Minecraft Server Launcher" */;
+			buildPhases = (
+				C46EA17C26D57E6400BFD926 /* Sources */,
+				C46EA17D26D57E6400BFD926 /* Frameworks */,
+				C46EA17E26D57E6400BFD926 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Minecraft Server Launcher";
+			productName = "Minecraft Server Launcher";
+			productReference = C46EA18026D57E6400BFD926 /* Minecraft Server Launcher.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C46EA17826D57E6400BFD926 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					C46EA17F26D57E6400BFD926 = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
+				};
+			};
+			buildConfigurationList = C46EA17B26D57E6400BFD926 /* Build configuration list for PBXProject "Minecraft Server Launcher" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C46EA17726D57E6400BFD926;
+			productRefGroup = C46EA18126D57E6400BFD926 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C46EA17F26D57E6400BFD926 /* Minecraft Server Launcher */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C46EA17E26D57E6400BFD926 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C46EA1BE26D842D100BFD926 /* MCServer.png in Resources */,
+				C46EA18926D57E6400BFD926 /* Assets.xcassets in Resources */,
+				C46EA18C26D57E6500BFD926 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C46EA17C26D57E6400BFD926 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C46EA18F26D57E6500BFD926 /* main.m in Sources */,
+				C46EA18726D57E6400BFD926 /* AppDelegate.applescript in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C46EA18A26D57E6500BFD926 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C46EA18B26D57E6500BFD926 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C46EA19026D57E6500BFD926 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C46EA19126D57E6500BFD926 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C46EA19326D57E6500BFD926 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = MCServer;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = AHT4F9P2L4;
+				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = "";
+				INFOPLIST_FILE = "Minecraft Server Launcher/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				OSACOMPILE_EXECUTE_ONLY = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C46EA19426D57E6500BFD926 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = MCServer;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = AHT4F9P2L4;
+				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = "";
+				INFOPLIST_FILE = "Minecraft Server Launcher/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				ONLY_ACTIVE_ARCH = YES;
+				OSACOMPILE_EXECUTE_ONLY = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C46EA17B26D57E6400BFD926 /* Build configuration list for PBXProject "Minecraft Server Launcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C46EA19026D57E6500BFD926 /* Debug */,
+				C46EA19126D57E6500BFD926 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C46EA19226D57E6500BFD926 /* Build configuration list for PBXNativeTarget "Minecraft Server Launcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C46EA19326D57E6500BFD926 /* Debug */,
+				C46EA19426D57E6500BFD926 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C46EA17826D57E6400BFD926 /* Project object */;
+}
