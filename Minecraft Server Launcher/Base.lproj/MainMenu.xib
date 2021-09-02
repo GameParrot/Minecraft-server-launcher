@@ -576,7 +576,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6fA-xa-llE">
                         <rect key="frame" x="23" y="37" width="289" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" alignment="center" id="sNi-SL-SXi">
+                        <textFieldCell key="cell" selectable="YES" alignment="center" id="sNi-SL-SXi">
                             <font key="font" metaFont="system"/>
                             <string key="title">Minecraft Server Launcher lets you have all your server(s) in one easy to use launcher.
 GitHub: github.com/GameParrot/Minecraft-server-launcher</string>
@@ -585,9 +585,9 @@ GitHub: github.com/GameParrot/Minecraft-server-launcher</string>
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZ9-5a-4J7">
-                        <rect key="frame" x="130" y="13" width="74" height="16"/>
+                        <rect key="frame" x="129" y="13" width="76" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Version: 1.0" id="EGZ-fr-NvZ">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Version: 1.1" id="EGZ-fr-NvZ">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

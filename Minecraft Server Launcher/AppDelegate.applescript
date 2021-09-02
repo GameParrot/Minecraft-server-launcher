@@ -20,7 +20,7 @@ script AppDelegate
     property theSerEdit : missing value
     property theSerText : missing value
     property theSerProName : missing value
-    
+    -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
         set theTextItems to every text item of theText
@@ -29,8 +29,10 @@ script AppDelegate
     end splitText
     on applicationWillFinishLaunching_(aNotification)
         try
+            -- Checks if it is the first launch
             do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server'"
             do shell script "rm -rf $HOME/'Library/Application Support/Minecraft Server'"
+            -- Shows the EULA if it is the first launch
             set theEULAWindow's isVisible to true
             set theWindow's isVisible to false
             set theURLString to "https://account.mojang.com/documents/minecraft_eula"
@@ -44,6 +46,7 @@ script AppDelegate
                 log "
 usage: Minecraft Server Launcher [-launch servername]
 To launch a server from the command line, use '" & item 1 of args as text & "' -launch servername"
+-- Shows the help message
 quit
                 else
                 if item 2 of args as text is "-launch"
@@ -51,6 +54,7 @@ quit
                     set repeatIndex to 0
                     set classPath to ""
                         set theName to item 3 of args
+                        -- Gets the main class, depending on the version
                     try
                         set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
                         set majorVersion to item 2 of splitText(theVersion, ".")
@@ -76,6 +80,7 @@ quit
                             set mainclass to "net.minecraft.server.Main"
                         end try
                     end try
+                    -- Gets the classpath from the json
                     set theText to splitText((item 2 of splitText(do shell script "cat $HOME'/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".json'", "\"libraries\": ")), "{\"artifact\": {\"path\": \"")
                     repeat with i in theText
                         set repeatIndex to repeatIndex + 1
@@ -89,6 +94,7 @@ quit
                             set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".jar\"")
                         end if
                     end repeat
+                    -- Checks settings and launches the server
                     try
                         do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
                         set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & mainclass
@@ -135,9 +141,9 @@ quit
         set cpCount to 0
         set repeatIndex to 0
         set classPath to ""
-        set theName to text returned of (display dialog "Server name" default answer "Untitled Server" with title "New Server")
+        set theName to text returned of (display dialog "Server name" default answer "Untitled Server" with title "New Server") -- Asks for the name
         try
-            set allInst to do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'"
+            set allInst to do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'" -- Checks if a server with the specified name already exists
         on error
             set allInst to ""
         end try
@@ -145,8 +151,9 @@ quit
             display alert "Already exists"
             error number -128
         end if
-        do shell script "touch $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+        do shell script "touch $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'" -- Creates the version file
         try
+            -- Lists all the versions
             set theSupportedVersions to {}
             repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
                 try
@@ -163,7 +170,7 @@ quit
                     end try
                 end try
             end repeat
-            set theVersion to item 1 of (choose from list theSupportedVersions with title "Minecraft versions" with prompt "Choose Minecraft verson. The version will not work if it is modded or if it has never been ran in the launcher.")
+            set theVersion to item 1 of (choose from list theSupportedVersions with title "Minecraft versions" with prompt "Choose Minecraft verson. The version will not work if it is modded or if it has never been ran in the launcher.") -- Asks the user for the version they want
             do shell script "echo '" & theVersion & "' > $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
             do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'"
             do shell script "echo 'eula=true' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'/eula.txt"
@@ -173,7 +180,7 @@ quit
         on error
             error number -128
         end try
-        
+        current application's NSLog("Server created")
         display alert "Created server"
     end newinst_
     on launchinst_(sender)
@@ -186,6 +193,7 @@ quit
         on error
             error number -128
         end try
+        -- Gets the main class
         try
             set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
             set majorVersion to item 2 of splitText(theVersion, ".")
@@ -211,6 +219,7 @@ quit
                 set mainclass to "net.minecraft.server.Main"
             end try
         end try
+        -- Gets the classpath from the json
         set theText to splitText((item 2 of splitText(do shell script "cat $HOME'/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".json'", "\"libraries\": ")), "{\"artifact\": {\"path\": \"")
         repeat with i in theText
             set repeatIndex to repeatIndex + 1
@@ -224,6 +233,7 @@ quit
                 set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".jar\"")
             end if
         end repeat
+        -- Checks settings and launches the server
         try
             do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
             set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & mainclass
@@ -240,7 +250,7 @@ quit
             do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
                     $HOME'" & "/Library/Application Support/minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
         end try
-
+        current application's NSLog("Server launched")
     end launchinst_
     on editinst_(sender)
         set cpCount to 0
@@ -252,12 +262,12 @@ quit
         on error
             error number -128
         end try
-        set theEditChoice to item 1 of (choose from list {"Open server folder", "Open server.properties", "Change version", "UIElement", "Rename server", "Change icon", "No GUI", "Delete server"} with title "Edit Server" with prompt "What do you want to edit?")
+        set theEditChoice to item 1 of (choose from list {"Open server folder", "Open server.properties", "Change version", "UIElement", "Rename server", "Change icon", "No GUI", "Delete server"} with title "Edit Server" with prompt "What do you want to edit?") -- Asks the user what they want to edit
         if theEditChoice is "Open server folder" then
-            do shell script "open -R $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'"
+            do shell script "open -R $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'" -- Opens the server folder in Finder
         else
             if theEditChoice is "Delete server" then
-                display dialog "Are you sure you want to delete this server?"
+                display dialog "Are you sure you want to delete this server?" -- Asks if they want to delete the server
                 do shell script "rm -rf $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'
                 rm $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
             else
@@ -276,7 +286,7 @@ quit
                 do shell script "mv $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt' $HOME'/Library/Application Support/Minecraft Server/info/" & thenewName & ".txt'"
                 else
                 if theEditChoice is "Change icon" then
-                    do shell script "cp '" & (the POSIX path of (choose file with prompt "Choose icon" of type "public.image")) & "' $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'"
+                    do shell script "cp '" & (the POSIX path of (choose file with prompt "Choose icon" of type "public.image")) & "' $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'" -- Copies the new icon
                 else
                 if theEditChoice is "UIElement" then
                     set theUIElem to display dialog "Do you want the server to be a UIElement? if it is, then it will not appear on the dock." buttons {"Yes", "No"}
@@ -296,16 +306,17 @@ quit
                 else
                 if theEditChoice is "Open server.properties" then
                     try
-                        set theProperties to (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/server.properties'")
-                        set theSerEdit's isVisible to true
-                        set theSerEdit's title to "Editing server.properties for " & theName
-                        theSerText's setString:theProperties
+                        set theProperties to (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/server.properties'") -- Reads the current server.properties
+                        set theSerEdit's isVisible to true -- Shows the server.properties editor window
+                        set theSerEdit's title to "Editing server.properties for " & theName  -- Sets the window title
+                        theSerText's setString:theProperties -- Sets the text displayed in the server.properties editor too the server.properties file contents
                         set theSerProName's stringValue to theName
                     on error
                         display alert "Error: server.properties not found." message "Try launching the server." as critical
                     end try
                 else
                 try
+                    -- Lists all the versions
                     set theSupportedVersions to {}
                     repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
                         try
@@ -334,17 +345,21 @@ quit
         end if
     end editinst_
     on saveserverproperties_(sender)
-        set theServerProperties to theSerText's textStorage()
-        set theSavedText to theServerProperties's |string|()
+        set theServerProperties to theSerText's textStorage() -- Gets the text from the server.properties editor
+        set theSavedText to theServerProperties's |string|() -- Converts the text from the server.properties editor to a string
         set theS to theSavedText as text
-        do shell script "echo '" & theS & "' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theSerProName's stringValue & "/server.properties'"
-        set theSerEdit's isVisible to false
+        do shell script "rm $HOME/'Library/Application Support/Minecraft Server/installations/" & theSerProName's stringValue & "/server.properties'" -- Deletes the existing server.properties
+        repeat with ii in (paragraphs of theS)
+        do shell script "echo '" & ii & "' >> $HOME/'Library/Application Support/Minecraft Server/installations/" & theSerProName's stringValue & "/server.properties'" -- Creates the new server.properties
+        end repeat
+        current application's NSLog("Saved server.properties")
+        set theSerEdit's isVisible to false -- Hides the server.properties window
     end saveserverproperties_
     on cancelproperties_(sender)
-        set theSerEdit's isVisible to false
+        set theSerEdit's isVisible to false -- Hides the server.properties window
     end cancelproperties_
     on showabout_(sender)
-        set theAbout's isVisible to true
+        set theAbout's isVisible to true -- Shows the about window
     end showabout_
     on githubpage_(sender)
         do shell script "open 'https://github.com/GameParrot/Minecraft-server-launcher'"
