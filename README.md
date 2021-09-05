@@ -5,7 +5,7 @@ To get started, just use the installer from the Releases and start the app. The 
 # Launching your server:
 Just use the Launch server button and choose your server.
 # Editing your server:
-Use the Edit Server button and choose your server. You will be asked to choose what you want to edit. The UIElement option can be used to make the server appear as a window but not on the dock. The change icon option can be used to change the icon on the dock. The NO GUI option lets you make the server launch in Terminal without a GUI.
+Use the Edit Server button and choose your server. An editing window will show up. The UIElement option can be used to make the server appear as a window but not on the dock. The change icon option can be used to change the icon on the dock. The NO GUI option lets you make the server launch in Terminal without a GUI.
 # Command line usage:
 You can use the the terminal to launch a server using -launch server_name. Example: ```open -a 'Minecraft Server Launcher' --args -launch 'My Server'```
 You can also edit a server using the command line with -edit. Example: ```open -a 'Minecraft Server Launcher' --args -edit 'My Server' changeVersion 1.17.1```
