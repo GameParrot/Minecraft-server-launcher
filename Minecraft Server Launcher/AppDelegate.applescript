@@ -20,6 +20,13 @@ script AppDelegate
     property theSerEdit : missing value
     property theSerText : missing value
     property theSerProName : missing value
+    property theUIElementButton : missing value
+    property theEditWindow : missing value
+    property theServerEditing : missing value
+    property theNoGUIButton : missing value
+    property theRenameField : missing value
+    property theEditHelpWindow : missing value
+    
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -44,8 +51,9 @@ script AppDelegate
             set args to (current application's NSProcessInfo's processInfo()'s arguments())
             if item 2 of args as text is "-h" or item 2 of args as text is "--help"
                 log "
-usage: Minecraft Server Launcher [-launch servername]
-To launch a server from the command line, use '" & item 1 of args as text & "' -launch servername"
+usage: Minecraft Server Launcher [-launch servername] [-edit servername edit_id value]
+To launch a server from the command line, use '" & item 1 of args as text & "' -launch servername
+To edit a server from the command line, use -edit servername [UIElement <0> <1>] [NoGUI <0> <1>] [Delete] [changeVersion <version>]"
 -- Shows the help message
 quit
                 else
@@ -113,7 +121,35 @@ quit
                     end try
                     quit
                 else
+                if item 2 of args as text is "-edit"
+                    set theName to item 3 of args as text
+                    if item 4 of args as text is "UIElement" then
+                        if item 5 of args as text is "1" then
+                            do shell script "echo '-Dapple.awt.UIElement=true' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'" -- Creates the UIElement file
+                            else
+                            do shell script "echo '' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'" -- Empties the UIElement file
+                            end if
+                    end if
+                    if item 4 of args as text is "NoGUI" then
+                        if item 5 of args as text is "1" then
+                            do shell script "touch $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'" -- Creates the NO GUI file
+                        else
+                            do shell script "rm $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'" -- Removes the NO GUI file
+                        end if
+                    end if
+                    if item 4 of args as text is "Delete" then
+                        do shell script "rm -rf $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'
+                        rm $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+                    end if
+                    if item 4 of args as text is "changeVersion" then
+                        set theVersion to item 5 of args as text
+                        do shell script "echo '" & theVersion & "' > $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'" -- Copies the new version to the text file it reads from
+                    end if
+                    quit
+                else
+                log "Ignored Argument: " & item 2 of args as text
                 set theWindow's isVisible to true
+                end if
                 end if
                 end if
             on error
@@ -253,96 +289,27 @@ quit
         current application's NSLog("Server launched")
     end launchinst_
     on editinst_(sender)
-        set cpCount to 0
-        set repeatIndex to 0
-        set classPath to ""
         set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
         try
             set theName to item 1 of (choose from list allInstalledVersion with title "Servers" with prompt "Choose a server")
         on error
             error number -128
         end try
-        set theEditChoice to item 1 of (choose from list {"Open server folder", "Open server.properties", "Change version", "UIElement", "Rename server", "Change icon", "No GUI", "Delete server"} with title "Edit Server" with prompt "What do you want to edit?") -- Asks the user what they want to edit
-        if theEditChoice is "Open server folder" then
-            do shell script "open -R $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'" -- Opens the server folder in Finder
+        if (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") is "-Dapple.awt.UIElement=true" then
+            set theUIElementButton's state to true
         else
-            if theEditChoice is "Delete server" then
-                display dialog "Are you sure you want to delete this server?" -- Asks if they want to delete the server
-                do shell script "rm -rf $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'
-                rm $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
-            else
-            if theEditChoice is "Rename server" then
-                set theNewName to text returned of (display dialog "Server name" default answer theName with title "Rename Server")
-                try
-                    set allInst to do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'"
-                on error
-                    set allInst to ""
-                end try
-                if allInst contains theNewName then
-                    display alert "Already exists"
-                    error number -128
-                end if
-                do shell script "mv $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "' $HOME'/Library/Application Support/Minecraft Server/installations/" & thenewName & "'"
-                do shell script "mv $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt' $HOME'/Library/Application Support/Minecraft Server/info/" & thenewName & ".txt'"
-                else
-                if theEditChoice is "Change icon" then
-                    do shell script "cp '" & (the POSIX path of (choose file with prompt "Choose icon" of type "public.image")) & "' $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'" -- Copies the new icon
-                else
-                if theEditChoice is "UIElement" then
-                    set theUIElem to display dialog "Do you want the server to be a UIElement? if it is, then it will not appear on the dock." buttons {"Yes", "No"}
-                    if button returned of theUIElem is "Yes" then
-                        do shell script "echo '-Dapple.awt.UIElement=true' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'"
-                        else
-                        do shell script "echo '' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'"
-                        end if
-                else
-                if theEditChoice is "No GUI" then
-                    set nogui to display dialog "Do you want the server open in Terminal without a GUI?" buttons {"Yes", "No"}
-                    if button returned of nogui is "Yes" then
-                        do shell script "touch $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
-                        else
-                        do shell script "rm $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
-                        end if
-                else
-                if theEditChoice is "Open server.properties" then
-                    try
-                        set theProperties to (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/server.properties'") -- Reads the current server.properties
-                        set theSerEdit's isVisible to true -- Shows the server.properties editor window
-                        set theSerEdit's title to "Editing server.properties for " & theName  -- Sets the window title
-                        theSerText's setString:theProperties -- Sets the text displayed in the server.properties editor too the server.properties file contents
-                        set theSerProName's stringValue to theName
-                    on error
-                        display alert "Error: server.properties not found." message "Try launching the server." as critical
-                    end try
-                else
-                try
-                    -- Lists all the versions
-                    set theSupportedVersions to {}
-                    repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
-                        try
-                            set majorVersion to item 2 of splitText(i, ".")
-                            if (majorVersion as number) > 12 then
-                                set end of theSupportedVersions to (i as text)
-                            end if
-                        on error
-                            try
-                                set majorVersion to item 1 of splitText(i, "w")
-                                if (majorVersion as number) > 17 then
-                                    set end of theSupportedVersions to (i as text)
-                                end if
-                            end try
-                        end try
-                    end repeat
-                    set theVersion to item 1 of (choose from list theSupportedVersions with title "Minecraft versions" with prompt "Choose Minecraft verson. The version will not work if it is modded or if it has never been ran in the launcher.")
-                    do shell script "echo '" & theVersion & "' > $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
-                end try
-            end if
-                end if
-                end if
-                end if
-                end if
-            end if
+            set theUIElementButton's state to false
         end if
+        try
+            do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
+            set theNoGUIButton's state to true
+        on error
+            set theNoGUIButton's state to false
+        end try
+        set theEditWindow's isVisible to true
+        set theEditWindow's title to "Editing " & theName
+        set theServerEditing's stringValue to theName
+        set theRenameField's stringValue to theName
     end editinst_
     on saveserverproperties_(sender)
         set theServerProperties to theSerText's textStorage() -- Gets the text from the server.properties editor
@@ -370,5 +337,92 @@ quit
     on applicationShouldTerminateAfterLastWindowClosed_(sender)
         return true
     end applicationShouldTerminateAfterLastWindowClosed_
-    
+    on uielementtoggle_(sender)
+        set theName to theServerEditing's stringValue
+        if theUIElementButton's state as boolean is true then
+            do shell script "echo '-Dapple.awt.UIElement=true' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'" -- Creates the UIElement file
+            else
+            do shell script "echo '' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'" -- Empties the UIElement file
+            end if
+    end uielementtoggle_
+    on noguitoggle_(sender)
+        set theName to theServerEditing's stringValue
+        if theNoGUIButton's state as boolean is true then
+            do shell script "touch $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'" -- Creates the No GUI file
+            else
+            do shell script "rm $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'" -- Removes the No GUI file
+            end if
+    end noguitoggle_
+    on renameserver_(sender)
+        set theName to theServerEditing's stringValue
+        set theNewName to theRenameField's stringValue
+        try
+            set allInst to do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'" -- Gets all the servers
+        on error
+            set allInst to ""
+        end try
+        if allInst contains theNewName then
+            display alert "Already exists"
+            set theRenameField's stringValue to theName
+            error number -128
+        end if
+        do shell script "mv $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "' $HOME'/Library/Application Support/Minecraft Server/installations/" & theNewName & "'"
+        do shell script "mv $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt' $HOME'/Library/Application Support/Minecraft Server/info/" & thenewName & ".txt'"
+        set theServerEditing's stringValue to theNewName
+        set theEditWindow's title to "Editing " & theNewName
+    end renameserver_
+    on changeicon_(sender)
+        set theName to theServerEditing's stringValue
+        do shell script "cp '" & (the POSIX path of (choose file with prompt "Choose icon" of type "public.image")) & "' $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'" -- Copies the new icon
+    end changeicon_
+    on openproperties_(sender)
+        set theName to theServerEditing's stringValue
+        try
+            set theProperties to (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/server.properties'") -- Reads the current server.properties
+            set theSerEdit's isVisible to true -- Shows the server.properties editor window
+            set theSerEdit's title to "Editing server.properties for " & theName  -- Sets the window title
+            theSerText's setString:theProperties -- Sets the text displayed in the server.properties editor too the server.properties file contents
+            set theSerProName's stringValue to theName
+        on error
+            display alert "Error: server.properties not found." message "Try launching the server." as critical
+        end try
+    end openproperties_
+    on openfolder_(sender)
+        set theName to theServerEditing's stringValue
+        do shell script "open -R $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'" -- Opens the server folder in Finder
+    end openfolder_
+    on changeversion_(sender)
+        set theName to theServerEditing's stringValue
+        try
+            -- Lists all the versions
+            set theSupportedVersions to {}
+            repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
+                try
+                    set majorVersion to item 2 of splitText(i, ".")
+                    if (majorVersion as number) > 12 then
+                        set end of theSupportedVersions to (i as text)
+                    end if
+                on error
+                    try
+                        set majorVersion to item 1 of splitText(i, "w")
+                        if (majorVersion as number) > 17 then
+                            set end of theSupportedVersions to (i as text)
+                        end if
+                    end try
+                end try
+            end repeat
+            set theVersion to item 1 of (choose from list theSupportedVersions with title "Minecraft versions" with prompt "Choose Minecraft verson. The version will not work if it is modded or if it has never been ran in the launcher.")
+            do shell script "echo '" & theVersion & "' > $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+        end try
+    end changeversion_
+    on deleteserver_(sender)
+        set theName to theServerEditing's stringValue
+        display dialog "Are you sure you want to delete this server? This action cannot be undone." -- Asks if you want to delete the server
+        do shell script "rm -rf $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'
+        rm $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+        set theEditWindow's isVisible to false
+    end deleteserver_
+    on edithelp_(sender)
+        set theEditHelpWindow's isVisible to true
+    end edithelp_
 end script

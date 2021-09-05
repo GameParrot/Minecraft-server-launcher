@@ -45,7 +45,6 @@
 			isa = PBXGroup;
 			children = (
 				C46EA18526D57E6400BFD926 /* Minecraft Server Launcher */,
-				C46EA18226D57E6400BFD926 /* Frameworks */,
 				C46EA18126D57E6400BFD926 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +64,7 @@
 				C46EA18326D57E6400BFD926 /* AppleScriptObjC.framework */,
 			);
 			name = Frameworks;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		C46EA18526D57E6400BFD926 /* Minecraft Server Launcher */ = {
@@ -72,6 +72,7 @@
 			children = (
 				C46EA18626D57E6400BFD926 /* AppDelegate.applescript */,
 				C46EA18826D57E6400BFD926 /* Assets.xcassets */,
+				C46EA18226D57E6400BFD926 /* Frameworks */,
 				C46EA18A26D57E6500BFD926 /* MainMenu.xib */,
 				C46EA1BD26D842D100BFD926 /* MCServer.png */,
 				C46EA18D26D57E6500BFD926 /* Info.plist */,
@@ -286,7 +287,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 1.2;
 				DEVELOPMENT_TEAM = AHT4F9P2L4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = "";
@@ -296,7 +297,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OSACOMPILE_EXECUTE_ONLY = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -310,7 +311,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 1.2;
 				DEVELOPMENT_TEAM = AHT4F9P2L4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = "";
@@ -320,7 +321,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				ONLY_ACTIVE_ARCH = YES;
 				OSACOMPILE_EXECUTE_ONLY = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";
