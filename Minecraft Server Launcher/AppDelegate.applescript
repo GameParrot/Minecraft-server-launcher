@@ -26,6 +26,7 @@ script AppDelegate
     property theNoGUIButton : missing value
     property theRenameField : missing value
     property theEditHelpWindow : missing value
+    property theJavaExecWindow : missing value
     
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
@@ -47,6 +48,13 @@ script AppDelegate
             set theRequest to current application's NSURLRequest's requestWithURL:theURL
             eulaWeb's loadRequest:theRequest
             on error
+            try
+                do shell script "ls $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app'"
+            on error
+                do shell script "unzip '" & the POSIX path of (path to current application) & "Contents/Resources/MCServerApp.zip' -d $HOME'/Library/Application Support/Minecraft Server'"
+                do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+                do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
+            end try
             try
             set args to (current application's NSProcessInfo's processInfo()'s arguments())
             if item 2 of args as text is "-h" or item 2 of args as text is "--help"
@@ -110,14 +118,14 @@ quit
                         do shell script "echo '#!/bin/sh
                         cd $HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "'\\''
                         rm /tmp/serverlaunch
-                                exec $HOME'\\''" & "/Library/Application Support/minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
+                                exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
                                 do shell script "chmod +x /tmp/serverlaunch
                                 open /tmp/serverlaunch -F -b com.apple.Terminal"
                     on error
                         set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & mainclass
                         
                         do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
-                                $HOME'" & "/Library/Application Support/minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
+                                $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
                     end try
                     quit
                 else
@@ -172,6 +180,9 @@ quit
         do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server'"
         do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/info'"
         do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/installations'"
+        do shell script "unzip '" & the POSIX path of (path to current application) & "Contents/Resources/MCServerApp.zip' -d $HOME'/Library/Application Support/Minecraft Server'"
+        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
     end iagree_
     on newinst_(sender)
         set cpCount to 0
@@ -277,14 +288,14 @@ quit
             do shell script "echo '#!/bin/sh
             cd $HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "'\\''
             rm /tmp/serverlaunch
-                    exec $HOME'\\''" & "/Library/Application Support/minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
+                    exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
                     do shell script "chmod +x /tmp/serverlaunch
                     open /tmp/serverlaunch -F -b com.apple.Terminal"
         on error
             set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & mainclass
             
             do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
-                    $HOME'" & "/Library/Application Support/minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
+                    $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
         end try
         current application's NSLog("Server launched")
     end launchinst_
@@ -425,4 +436,22 @@ quit
     on edithelp_(sender)
         set theEditHelpWindow's isVisible to true
     end edithelp_
+    on changejavaexec_(sender)
+        set theJavaExecWindow's isVisible to true
+    end changejavaexec_
+    on choosejavaexec_(sender)
+        set theNewExec to the POSIX Path of (choose file with prompt "Choose new Java Executable:" of type "public.unix-executable")
+        do shell script "rm $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+        do shell script "rm $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
+        do shell script "ln -s '" & theNewExec & "' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+        do shell script "ln -s '" & theNewExec & "' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
+        set theJavaExecWindow's isVisible to false
+    end choosejavaexec_
+    on resetjavaexec_(sender)
+        do shell script "rm $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+        do shell script "rm $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
+        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
+        set theJavaExecWindow's isVisible to false
+    end resetjavaexec_
 end script

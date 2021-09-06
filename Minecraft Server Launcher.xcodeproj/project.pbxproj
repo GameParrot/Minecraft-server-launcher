@@ -14,6 +14,7 @@
 		C46EA18F26D57E6500BFD926 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C46EA18E26D57E6500BFD926 /* main.m */; };
 		C46EA1BA26D5C5B900BFD926 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46EA1B926D5C5B900BFD926 /* WebKit.framework */; };
 		C46EA1BE26D842D100BFD926 /* MCServer.png in Resources */ = {isa = PBXBuildFile; fileRef = C46EA1BD26D842D100BFD926 /* MCServer.png */; };
+		C4A57F5526E62E5200B4E5AF /* MCServerApp.zip in Resources */ = {isa = PBXBuildFile; fileRef = C4A57F5426E62E5100B4E5AF /* MCServerApp.zip */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		C46EA18E26D57E6500BFD926 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C46EA1B926D5C5B900BFD926 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C46EA1BD26D842D100BFD926 /* MCServer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MCServer.png; sourceTree = "<group>"; };
+		C4A57F5426E62E5100B4E5AF /* MCServerApp.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = MCServerApp.zip; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 			children = (
 				C46EA18626D57E6400BFD926 /* AppDelegate.applescript */,
 				C46EA18826D57E6400BFD926 /* Assets.xcassets */,
+				C4A57F5426E62E5100B4E5AF /* MCServerApp.zip */,
 				C46EA18226D57E6400BFD926 /* Frameworks */,
 				C46EA18A26D57E6500BFD926 /* MainMenu.xib */,
 				C46EA1BD26D842D100BFD926 /* MCServer.png */,
@@ -137,6 +140,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4A57F5526E62E5200B4E5AF /* MCServerApp.zip in Resources */,
 				C46EA1BE26D842D100BFD926 /* MCServer.png in Resources */,
 				C46EA18926D57E6400BFD926 /* Assets.xcassets in Resources */,
 				C46EA18C26D57E6500BFD926 /* MainMenu.xib in Resources */,
@@ -287,7 +291,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.2;
+				CURRENT_PROJECT_VERSION = 1.3;
 				DEVELOPMENT_TEAM = AHT4F9P2L4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = "";
@@ -297,7 +301,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				OSACOMPILE_EXECUTE_ONLY = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -311,7 +315,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.2;
+				CURRENT_PROJECT_VERSION = 1.3;
 				DEVELOPMENT_TEAM = AHT4F9P2L4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = "";
@@ -321,7 +325,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				ONLY_ACTIVE_ARCH = YES;
 				OSACOMPILE_EXECUTE_ONLY = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";

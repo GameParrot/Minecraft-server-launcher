@@ -21,6 +21,7 @@
                 <outlet property="theEULAWindow" destination="HD2-py-CyQ" id="FGU-AC-9aC"/>
                 <outlet property="theEditHelpWindow" destination="lWW-0S-C2Y" id="dhv-qT-RYL"/>
                 <outlet property="theEditWindow" destination="get-1l-uiV" id="Rxa-5z-wIH"/>
+                <outlet property="theJavaExecWindow" destination="6tX-eD-7xK" id="XJh-YK-vWB"/>
                 <outlet property="theNoGUIButton" destination="6Yv-wk-JK9" id="bSa-Ji-JEm"/>
                 <outlet property="theRenameField" destination="2Tt-7k-xKs" id="aH3-8v-SnY"/>
                 <outlet property="theSerEdit" destination="gpB-FY-hJW" id="8BL-Z3-mBN"/>
@@ -45,6 +46,13 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="hBL-ZQ-nWh"/>
+                            <menuItem title="Change Java Executable..." id="jkK-Bc-kw1">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="changejavaexec:" target="Voe-Tx-rLC" id="ACV-cj-F71"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="ALy-oH-3pU"/>
                             <menuItem title="Services" id="NMo-om-nkz">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
@@ -554,7 +562,7 @@ GitHub: github.com/GameParrot/Minecraft-server-launcher</string>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZ9-5a-4J7">
                         <rect key="frame" x="129" y="13" width="78" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Version: 1.2" id="EGZ-fr-NvZ">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Version: 1.3" id="EGZ-fr-NvZ">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -808,6 +816,41 @@ Delete server - Deletes the server.</string>
                 </subviews>
             </view>
             <point key="canvasLocation" x="-710" y="126"/>
+        </window>
+        <window title="Change Java Executable" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="6tX-eD-7xK">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="840" y="497" width="356" height="101"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1127"/>
+            <view key="contentView" id="RRY-D0-zHL">
+                <rect key="frame" x="0.0" y="0.0" width="356" height="101"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="73C-cd-r7K">
+                        <rect key="frame" x="82" y="54" width="193" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Choose Java Executable..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="We6-T1-g5x">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="choosejavaexec:" target="Voe-Tx-rLC" id="7mC-JA-dYh"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="de2-hp-Jny">
+                        <rect key="frame" x="93" y="13" width="170" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Reset Java Executable" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xla-6P-9B3">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="resetjavaexec:" target="Voe-Tx-rLC" id="RO2-nK-YQN"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="320" y="842"/>
         </window>
     </objects>
     <resources>
