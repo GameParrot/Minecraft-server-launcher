@@ -27,7 +27,7 @@ script AppDelegate
     property theRenameField : missing value
     property theEditHelpWindow : missing value
     property theJavaExecWindow : missing value
-    
+    property theBG: missing value
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -35,6 +35,95 @@ script AppDelegate
         set AppleScript's text item delimiters to ""
         return theTextItems
     end splitText
+    
+    on launchMenu:sender
+        set cpCount to 0
+        set repeatIndex to 0
+        set classPath to ""
+        set theName to sender's title as text
+        try
+            set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+            set majorVersion to item 2 of splitText(theVersion, ".")
+            if (majorVersion as number) < 16 then
+                set mainclass to "net.minecraft.server.MinecraftServer"
+            else
+                set mainclass to "net.minecraft.server.Main"
+            end if
+        on error
+            try
+                set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+                set majorVersion to item 1 of splitText(theVersion, "w")
+                if (majorVersion as number) < 20 then
+                    set mainclass to "net.minecraft.server.MinecraftServer"
+                else
+                    if (majorVersion as number is 20) and item 1 of splitText(item 2 of splitText(theVersion, "w"), "a") as number < 20 then
+                        set mainclass to "net.minecraft.server.MinecraftServer"
+                    else
+                        set mainclass to "net.minecraft.server.Main"
+                    end if
+                end if
+            on error
+                set mainclass to "net.minecraft.server.Main"
+            end try
+        end try
+        -- Gets the classpath from the json
+        set theText to splitText((item 2 of splitText(do shell script "cat $HOME'/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".json'", "\"libraries\": ")), "{\"artifact\": {\"path\": \"")
+        repeat with i in theText
+            set repeatIndex to repeatIndex + 1
+            if repeatIndex < (length of theText) then
+                if cpCount is greater than 0 then
+                    set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"")
+                else
+                    set cpCount to cpCount + 1
+                end if
+            else
+                set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".jar\"")
+            end if
+        end repeat
+        -- Checks settings and launches the server
+        try
+            do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
+            set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & mainclass
+            
+            do shell script "echo '#!/bin/sh
+            cd $HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "'\\''
+            rm /tmp/serverlaunch
+                    exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
+                    do shell script "chmod +x /tmp/serverlaunch
+                    open /tmp/serverlaunch -F -b com.apple.Terminal"
+        on error
+            set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & mainclass
+            
+            do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
+                    $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
+        end try
+        current application's NSLog("Server launched")
+    end launchMenu:
+    on loadRandomImage()
+        if (random number from 1 to 2) is equal to 1 then
+        set theBG's image to current application's NSImage's imageNamed:"image2"
+        end if
+    end loadRandomImage
+    on createMenu()
+        set statusBar to current application's NSStatusBar's systemStatusBar
+        set statusBarItem to statusBar's statusItemWithLength:-1.0
+        statusBarItem's setTitle:"Launch Server"
+        statusBarItem's setImage:(current application's NSImage's imageNamed:"servermenuicon")
+        set newMenu to current application's NSMenu's alloc()'s initWithTitle:"Custom"
+        newMenu's removeAllItems()
+        set someListInstances to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
+        
+        repeat with i from 1 to number of items in someListInstances
+            set this_item to item i of someListInstances
+            set thisMenuItem to (current application's NSMenuItem's alloc()'s initWithTitle:this_item action:("launchMenu:") keyEquivalent:"")
+            
+            (newMenu's addItem:thisMenuItem)
+            
+            (thisMenuItem's setTarget:me)
+        end repeat
+        statusBarItem's setMenu:newMenu
+    end createMenu
+    
     on applicationWillFinishLaunching_(aNotification)
         try
             -- Checks if it is the first launch
@@ -164,6 +253,8 @@ quit
             set theWindow's isVisible to true
             end try
         end try
+        loadRandomImage()
+        createMenu()
 	end applicationWillFinishLaunching_
     
 	on applicationShouldTerminate_(sender)
