@@ -22,14 +22,16 @@
                 <outlet property="theEULAWindow" destination="HD2-py-CyQ" id="FGU-AC-9aC"/>
                 <outlet property="theEditHelpWindow" destination="lWW-0S-C2Y" id="dhv-qT-RYL"/>
                 <outlet property="theEditWindow" destination="get-1l-uiV" id="Rxa-5z-wIH"/>
-                <outlet property="theJavaExecWindow" destination="6tX-eD-7xK" id="XJh-YK-vWB"/>
+                <outlet property="theMenuCheckBox" destination="rUc-AI-zYl" id="6WF-B7-mxZ"/>
                 <outlet property="theNoGUIButton" destination="6Yv-wk-JK9" id="bSa-Ji-JEm"/>
+                <outlet property="thePreferenceWindow" destination="lkO-jK-QNT" id="zc4-Ib-VTL"/>
                 <outlet property="theRenameField" destination="2Tt-7k-xKs" id="aH3-8v-SnY"/>
                 <outlet property="theSerEdit" destination="gpB-FY-hJW" id="8BL-Z3-mBN"/>
                 <outlet property="theSerProName" destination="eFs-RX-t7q" id="cv5-FG-EqP"/>
                 <outlet property="theSerText" destination="xc9-Kl-8MP" id="UJ3-Bv-9zb"/>
                 <outlet property="theServerEditing" destination="Cx2-8e-8Ur" id="dn5-nX-EYu"/>
                 <outlet property="theUIElementButton" destination="n58-ru-kkW" id="ajl-lZ-A2c"/>
+                <outlet property="theUpdateCheckBox" destination="TsJ-5z-Qi8" id="dY4-EO-IGM"/>
                 <outlet property="theWindow" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -47,10 +49,9 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="hBL-ZQ-nWh"/>
-                            <menuItem title="Change Java Executable..." id="jkK-Bc-kw1">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Preferences..." keyEquivalent="," id="vDG-g5-Geb">
                                 <connections>
-                                    <action selector="changejavaexec:" target="Voe-Tx-rLC" id="ACV-cj-F71"/>
+                                    <action selector="preference:" target="Voe-Tx-rLC" id="3Nn-EV-2UZ"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="ALy-oH-3pU"/>
@@ -529,19 +530,19 @@
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="JWx-sK-RKL" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="852" y="465" width="335" height="216"/>
+            <rect key="contentRect" x="852" y="465" width="335" height="243"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1127"/>
             <view key="contentView" id="glP-ic-S1N">
-                <rect key="frame" x="0.0" y="0.0" width="335" height="216"/>
+                <rect key="frame" x="0.0" y="0.0" width="335" height="243"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yDt-Gt-fXF">
-                        <rect key="frame" x="117" y="134" width="101" height="82"/>
+                        <rect key="frame" x="117" y="161" width="101" height="82"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="MCServer" id="14o-sQ-7mx"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8lL-sv-Glw">
-                        <rect key="frame" x="73" y="109" width="188" height="17"/>
+                        <rect key="frame" x="73" y="136" width="188" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Minecraft Server Launcher" id="ebq-X5-yLI">
                             <font key="font" metaFont="systemBold" size="14"/>
@@ -550,7 +551,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6fA-xa-llE">
-                        <rect key="frame" x="23" y="37" width="289" height="64"/>
+                        <rect key="frame" x="23" y="64" width="289" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" selectable="YES" alignment="center" id="sNi-SL-SXi">
                             <font key="font" metaFont="system"/>
@@ -561,17 +562,28 @@ GitHub: github.com/GameParrot/Minecraft-server-launcher</string>
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZ9-5a-4J7">
-                        <rect key="frame" x="130" y="13" width="78" height="16"/>
+                        <rect key="frame" x="130" y="40" width="78" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Version: 1.4" id="EGZ-fr-NvZ">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Version: 1.5" id="EGZ-fr-NvZ">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8yO-Lu-od9">
+                        <rect key="frame" x="88" y="5" width="159" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Check for Updates..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="EYa-GD-9Aj">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="checkforupdates:" target="Voe-Tx-rLC" id="TsV-zu-IA8"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="385.5" y="457"/>
+            <point key="canvasLocation" x="385.5" y="470.5"/>
         </window>
         <window title="Editing server.properties" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="gpB-FY-hJW">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
@@ -818,40 +830,62 @@ Delete server - Deletes the server.</string>
             </view>
             <point key="canvasLocation" x="-710" y="126"/>
         </window>
-        <window title="Change Java Executable" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="6tX-eD-7xK">
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="lkO-jK-QNT" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="840" y="497" width="356" height="101"/>
+            <rect key="contentRect" x="881" y="479" width="344" height="150"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1127"/>
-            <view key="contentView" id="RRY-D0-zHL">
-                <rect key="frame" x="0.0" y="0.0" width="356" height="101"/>
+            <view key="contentView" id="OgP-h6-kuW">
+                <rect key="frame" x="0.0" y="0.0" width="344" height="150"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="73C-cd-r7K">
-                        <rect key="frame" x="82" y="54" width="193" height="32"/>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TsJ-5z-Qi8">
+                        <rect key="frame" x="68" y="113" width="206" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Choose Java Executable..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="We6-T1-g5x">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <buttonCell key="cell" type="check" title="Check for Updates on startup" bezelStyle="regularSquare" imagePosition="left" inset="2" id="MDz-nB-aIh">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="choosejavaexec:" target="Voe-Tx-rLC" id="7mC-JA-dYh"/>
+                            <action selector="toggleautoupdate:" target="Voe-Tx-rLC" id="9W7-8H-ZuD"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="de2-hp-Jny">
-                        <rect key="frame" x="93" y="13" width="170" height="32"/>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rUc-AI-zYl">
+                        <rect key="frame" x="107" y="91" width="128" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Reset Java Executable" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xla-6P-9B3">
+                        <buttonCell key="cell" type="check" title="Add to Menu Bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="em5-TX-gSu">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="togglemenubar:" target="Voe-Tx-rLC" id="vYT-rv-yII"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jIE-RN-13c">
+                        <rect key="frame" x="87" y="13" width="170" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Reset Java Executable" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vcD-zz-9FH">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="resetjavaexec:" target="Voe-Tx-rLC" id="RO2-nK-YQN"/>
+                            <action selector="resetjavaexec:" target="Voe-Tx-rLC" id="ggs-Zj-oL2"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ey-2G-9Tw">
+                        <rect key="frame" x="75" y="45" width="194" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Change Java Executable..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wd3-Pc-QxK">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="choosejavaexec:" target="Voe-Tx-rLC" id="4Bx-qF-hkb"/>
                         </connections>
                     </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="320" y="842"/>
+            <point key="canvasLocation" x="1056" y="123"/>
         </window>
     </objects>
     <resources>

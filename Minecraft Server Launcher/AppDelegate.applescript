@@ -26,8 +26,10 @@ script AppDelegate
     property theNoGUIButton : missing value
     property theRenameField : missing value
     property theEditHelpWindow : missing value
-    property theJavaExecWindow : missing value
-    property theBG: missing value
+    property theBG : missing value
+    property theUpdateCheckBox : missing value
+    property thePreferenceWindow : missing value
+    property theMenuCheckBox : missing value
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -35,7 +37,30 @@ script AppDelegate
         set AppleScript's text item delimiters to ""
         return theTextItems
     end splitText
-    
+    on checkforupdates_(sender)
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5"
+            applyupdates()
+        else
+        display alert "Up to date" message "You are running the latest version of Minecraft Server Launcher."
+        end if
+    end checkforupdates_
+    on applyupdates()
+        try
+        display alert "Update available!" message "Release notes:
+        " & (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/releasenotes.txt'") buttons {"Cancel", "Update"} cancel button "Cancel" default button "Update"
+        do shell script "echo 'curl -L \"https://github.com/GameParrot/Minecraft-server-launcher/blob/main/.update/MCServerLaunch.zip?raw=true\" > /tmp/update.zip
+        rm -rf \"/Applications/Minecraft Server Launcher.app\"
+        unzip /tmp/update.zip -d /Applications
+        rm /tmp/update.zip
+        open \"/Applications/Minecraft Server Launcher.app\"' | bash > /dev/null 2>&1 & " with administrator privileges
+        quit
+        end try
+    end applyupdates
+    on startupupdatecheck()
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5"
+            applyupdates()
+        end if
+    end startupupdatecheck
     on launchMenu:sender
         set cpCount to 0
         set repeatIndex to 0
@@ -254,9 +279,62 @@ quit
             end try
         end try
         loadRandomImage()
-        createMenu()
+        try
+            set theUpdateEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck"
+        if theUpdateEnabled is "1"
+            startupupdatecheck()
+        end if
+        on error
+            do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck -bool false"
+        end try
+        try
+            set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar"
+            if theMenuEnabled is "1"
+                createMenu()
+            end if
+        on error
+            do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar -bool true"
+            createMenu()
+        end try
 	end applicationWillFinishLaunching_
-    
+    on preference_(sender)
+        set thePreferenceWindow's isVisible to true
+        try
+            set theUpdateEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck"
+            if theUpdateEnabled is "1" then
+                set theUpdateCheckBox's state to true
+            else
+            set theUpdateCheckBox's state to false
+            end if
+        on error
+            set theUpdateCheckBox's state to false
+        end try
+        try
+            set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar"
+            if theMenuEnabled is "1" then
+                set theMenuCheckBox's state to true
+            else
+            set theMenuCheckBox's state to false
+            end if
+        on error
+            set theMenuCheckBox's state to true
+            do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar -bool true"
+        end try
+    end preference_
+    on toggleautoupdate_(sender)
+        if theUpdateCheckBox's state as boolean is true then
+            do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck -bool true"
+        else
+            do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck -bool false"
+        end if
+    end toggleautoupdate_
+    on togglemenubar_(sender)
+        if theMenuCheckBox's state as boolean is true then
+            do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar -bool true"
+        else
+            do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar -bool false"
+        end if
+    end toggleemenubar_
 	on applicationShouldTerminate_(sender)
 		-- Insert code here to do any housekeeping before your application quits 
 		return current application's NSTerminateNow
@@ -526,10 +604,7 @@ quit
     end deleteserver_
     on edithelp_(sender)
         set theEditHelpWindow's isVisible to true
-    end edithelp_
-    on changejavaexec_(sender)
-        set theJavaExecWindow's isVisible to true
-    end changejavaexec_
+    end edithelp__
     on choosejavaexec_(sender)
         set theNewExec to the POSIX Path of (choose file with prompt "Choose new Java Executable:" of type "public.unix-executable")
         do shell script "rm $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
