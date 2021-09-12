@@ -5,7 +5,8 @@
 --  Created by GameParrot on 8/24/21.
 --  
 --
-
+global statusBar
+global statusBarItem
 script AppDelegate
     use framework "Foundation"
     use framework "AppKit"
@@ -37,8 +38,26 @@ script AppDelegate
         set AppleScript's text item delimiters to ""
         return theTextItems
     end splitText
+    on updatemenu()
+        set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar"
+        if theMenuEnabled is "1"
+            set newMenu to current application's NSMenu's alloc()'s initWithTitle:"Custom"
+            newMenu's removeAllItems()
+            set someListInstances to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
+            
+            repeat with i from 1 to number of items in someListInstances
+                set this_item to item i of someListInstances
+                set thisMenuItem to (current application's NSMenuItem's alloc()'s initWithTitle:this_item action:("launchMenu:") keyEquivalent:"")
+                
+                (newMenu's addItem:thisMenuItem)
+                
+                (thisMenuItem's setTarget:me)
+            end repeat
+            statusBarItem's setMenu:newMenu
+        end if
+    end updatemenu
     on checkforupdates_(sender)
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5"
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5.1"
             applyupdates()
         else
         display alert "Up to date" message "You are running the latest version of Minecraft Server Launcher."
@@ -57,7 +76,7 @@ script AppDelegate
         end try
     end applyupdates
     on startupupdatecheck()
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5"
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5.1"
             applyupdates()
         end if
     end startupupdatecheck
@@ -290,11 +309,15 @@ quit
         try
             set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar"
             if theMenuEnabled is "1"
+                try
                 createMenu()
+                end try
             end if
         on error
             do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar -bool true"
+            try
             createMenu()
+            end try
         end try
 	end applicationWillFinishLaunching_
     on preference_(sender)
@@ -331,8 +354,10 @@ quit
     on togglemenubar_(sender)
         if theMenuCheckBox's state as boolean is true then
             do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar -bool true"
+            createMenu()
         else
             do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar -bool false"
+            statusBar's removeStatusItem_(statusBarItem)
         end if
     end toggleemenubar_
 	on applicationShouldTerminate_(sender)
@@ -359,7 +384,7 @@ quit
         set classPath to ""
         set theName to text returned of (display dialog "Server name" default answer "Untitled Server" with title "New Server") -- Asks for the name
         try
-            set allInst to do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'" -- Checks if a server with the specified name already exists
+            set allInst to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'") -- Checks if a server with the specified name already exists
         on error
             set allInst to ""
         end try
@@ -398,6 +423,7 @@ quit
         end try
         current application's NSLog("Server created")
         display alert "Created server"
+        updatemenu()
     end newinst_
     on launchinst_(sender)
         set cpCount to 0
@@ -537,7 +563,7 @@ quit
         set theName to theServerEditing's stringValue
         set theNewName to theRenameField's stringValue
         try
-            set allInst to do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'" -- Gets all the servers
+            set allInst to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'") -- Gets all the servers
         on error
             set allInst to ""
         end try
@@ -550,6 +576,7 @@ quit
         do shell script "mv $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt' $HOME'/Library/Application Support/Minecraft Server/info/" & thenewName & ".txt'"
         set theServerEditing's stringValue to theNewName
         set theEditWindow's title to "Editing " & theNewName
+        updatemenu()
     end renameserver_
     on changeicon_(sender)
         set theName to theServerEditing's stringValue
@@ -601,6 +628,7 @@ quit
         do shell script "rm -rf $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'
         rm $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
         set theEditWindow's isVisible to false
+        updatemenu()
     end deleteserver_
     on edithelp_(sender)
         set theEditHelpWindow's isVisible to true
