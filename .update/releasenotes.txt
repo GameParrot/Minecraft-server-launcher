@@ -1,1 +1,2 @@
-- Menu Bar support
+- Built in Updater
+- Ability to disable Menu Bar extra
