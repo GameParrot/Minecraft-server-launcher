@@ -1,2 +1,1 @@
-- Built in Updater
-- Ability to disable Menu Bar extra
+Bug fixes
