@@ -22,6 +22,7 @@
                 <outlet property="theEULAWindow" destination="HD2-py-CyQ" id="FGU-AC-9aC"/>
                 <outlet property="theEditHelpWindow" destination="lWW-0S-C2Y" id="dhv-qT-RYL"/>
                 <outlet property="theEditWindow" destination="get-1l-uiV" id="Rxa-5z-wIH"/>
+                <outlet property="theLegacyWindow" destination="iUS-v4-8si" id="vBB-UY-3VP"/>
                 <outlet property="theMenuCheckBox" destination="rUc-AI-zYl" id="6WF-B7-mxZ"/>
                 <outlet property="theNoGUIButton" destination="6Yv-wk-JK9" id="bSa-Ji-JEm"/>
                 <outlet property="thePreferenceWindow" destination="lkO-jK-QNT" id="zc4-Ib-VTL"/>
@@ -562,9 +563,9 @@ GitHub: github.com/GameParrot/Minecraft-server-launcher</string>
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZ9-5a-4J7">
-                        <rect key="frame" x="126" y="40" width="87" height="16"/>
+                        <rect key="frame" x="125" y="40" width="89" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Version: 1.5.1" id="EGZ-fr-NvZ">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Version: 1.5.2" id="EGZ-fr-NvZ">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -830,7 +831,7 @@ Delete server - Deletes the server.</string>
             </view>
             <point key="canvasLocation" x="-710" y="126"/>
         </window>
-        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="lkO-jK-QNT" customClass="NSPanel">
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="lkO-jK-QNT" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="881" y="479" width="344" height="150"/>
@@ -886,6 +887,65 @@ Delete server - Deletes the server.</string>
                 </subviews>
             </view>
             <point key="canvasLocation" x="1056" y="123"/>
+        </window>
+        <window title="Minecraft Server Launcher" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="iUS-v4-8si">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="655" y="411" width="427" height="233"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1127"/>
+            <value key="minSize" type="size" width="200" height="100"/>
+            <view key="contentView" id="pWR-YG-MWQ">
+                <rect key="frame" x="0.0" y="0.0" width="427" height="233"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" id="cc8-5X-HFA">
+                        <rect key="frame" x="162" y="168" width="104" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="90" id="063-Gd-5NT"/>
+                            <constraint firstAttribute="height" constant="20" id="Dch-dS-VUl"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="New Server" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Frk-xN-C4w">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="newinst:" target="Voe-Tx-rLC" id="qa4-Sv-sxP"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" id="QmA-73-pOW">
+                        <rect key="frame" x="153" y="103" width="122" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="yiv-db-mw1"/>
+                            <constraint firstAttribute="width" constant="108" id="zGx-IE-9gv"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Launch Server" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vZA-Gz-cDa">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="launchinst:" target="Voe-Tx-rLC" id="C3g-oT-16k"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" id="06Z-FN-jcx">
+                        <rect key="frame" x="163" y="30" width="101" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="bbI-cE-F1a"/>
+                            <constraint firstAttribute="width" constant="87" id="xpY-bH-626"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Edit Server" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hHP-SL-42T">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editinst:" target="Voe-Tx-rLC" id="g4i-fd-gQN"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="49.5" y="-285.5"/>
         </window>
     </objects>
     <resources>

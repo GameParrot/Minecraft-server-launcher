@@ -31,6 +31,7 @@ script AppDelegate
     property theUpdateCheckBox : missing value
     property thePreferenceWindow : missing value
     property theMenuCheckBox : missing value
+    property theLegacyWindow : missing value
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -57,7 +58,7 @@ script AppDelegate
         end if
     end updatemenu
     on checkforupdates_(sender)
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5.1"
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5.2"
             applyupdates()
         else
         display alert "Up to date" message "You are running the latest version of Minecraft Server Launcher."
@@ -76,7 +77,7 @@ script AppDelegate
         end try
     end applyupdates
     on startupupdatecheck()
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5.1"
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5.2"
             applyupdates()
         end if
     end startupupdatecheck
@@ -289,12 +290,20 @@ quit
                     quit
                 else
                 log "Ignored Argument: " & item 2 of args as text
-                set theWindow's isVisible to true
+                if (system version of (system info)) is less than 10.14 then
+                    set theLegacyWindow's isVisible to true
+                else
+                    set theWindow's isVisible to true
+                end if
                 end if
                 end if
                 end if
             on error
-            set theWindow's isVisible to true
+            if (system version of (system info)) is less than 10.14 then
+                set theLegacyWindow's isVisible to true
+            else
+                set theWindow's isVisible to true
+            end if
             end try
         end try
         loadRandomImage()
@@ -370,7 +379,11 @@ quit
     on iagree_(sender)
         display alert "I have read and agree to the Minecraft EULA" buttons {"Cancel", "I agree"} cancel button "Cancel"
         set theEULAWindow's isVisible to false
-        set theWindow's isVisible to true
+        if (system version of (system info)) is less than 10.14 then
+            set theLegacyWindow's isVisible to true
+        else
+            set theWindow's isVisible to true
+        end if
         do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server'"
         do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/info'"
         do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/installations'"
