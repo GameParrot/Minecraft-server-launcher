@@ -1,1 +1,2 @@
-Support for macOS Sierra and High Sierra
+New features:
+Ability to reset the server.properties file
