@@ -39,6 +39,9 @@ script AppDelegate
         set AppleScript's text item delimiters to ""
         return theTextItems
     end splitText
+    on NSLog(theLogText)
+        current application's NoTimestampLog's notimestamp_(theLogText)
+    end NSLog
     on updatemenu()
         set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar" -- Reads the settings file to check if Add to Menu Bar is enabled
         if theMenuEnabled is "1"
@@ -58,7 +61,7 @@ script AppDelegate
         end if
     end updatemenu
     on checkforupdates_(sender)
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6"
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6.1"
             applyupdates()
         else
         display alert "Up to date" message "You are running the latest version of Minecraft Server Launcher."
@@ -68,16 +71,18 @@ script AppDelegate
         try
         display alert "Update available!" message "Release notes:
         " & (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/releasenotes.txt'") buttons {"Cancel", "Update"} cancel button "Cancel" default button "Update"
+        NSLog("Requesting admin privileges")
         do shell script "echo 'curl -L \"https://github.com/GameParrot/Minecraft-server-launcher/blob/main/.update/MCServerLaunch.zip?raw=true\" > /tmp/update.zip
         rm -rf \"/Applications/Minecraft Server Launcher.app\"
         unzip /tmp/update.zip -d /Applications
         rm /tmp/update.zip
         open \"/Applications/Minecraft Server Launcher.app\"' | bash > /dev/null 2>&1 & " with administrator privileges
+        NSLog("Updating")
         quit
         end try
     end applyupdates
     on startupupdatecheck()
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6"
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6.1"
             applyupdates()
         end if
     end startupupdatecheck
@@ -132,10 +137,9 @@ script AppDelegate
             try
             set args to (current application's NSProcessInfo's processInfo()'s arguments())
             if item 2 of args as text is "-h" or item 2 of args as text is "--help"
-                log "
-usage: Minecraft Server Launcher [-launch servername] [-edit servername edit_id value]
+                NSLog("usage: Minecraft Server Launcher [-launch servername] [-edit servername edit_id value]
 To launch a server from the command line, use '" & item 1 of args as text & "' -launch servername
-To edit a server from the command line, use -edit servername [UIElement <0> <1>] [NoGUI <0> <1>] [Delete] [changeVersion <version>]"
+To edit a server from the command line, use -edit servername [UIElement <0> <1>] [NoGUI <0> <1>] [Delete] [changeVersion <version>]")
 -- Shows the help message
 quit
                 else
@@ -169,9 +173,10 @@ quit
                     end if
                     quit
                 else
-                log "Ignored Argument: " & item 2 of args as text
+                NSLog("Ignored Argument: " & item 2 of args as text)
                 if (system version of (system info)) is less than 10.14 then
                     set theLegacyWindow's isVisible to true  -- Uses a window that supports older macOS versions if needed.
+                    NSLog("WARNING: You are using an older macOS version. For best results, use macOS Mojave or newer.")
                 else
                     set theWindow's isVisible to true
                 end if
@@ -181,6 +186,7 @@ quit
             on error
             if (system version of (system info)) is less than 10.14 then
                 set theLegacyWindow's isVisible to true
+                NSLog("WARNING: You are using an older macOS version. For best results, use macOS Mojave or newer.")
             else
                 set theWindow's isVisible to true
             end if
@@ -260,6 +266,7 @@ quit
         set theEULAWindow's isVisible to false
         if (system version of (system info)) is less than 10.14 then
             set theLegacyWindow's isVisible to true
+            NSLog("WARNING: You are using an older macOS version. For best results use macOS Mojave or newer.")
         else
             set theWindow's isVisible to true
         end if
@@ -314,11 +321,12 @@ quit
             do shell script "rm $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
             error number -128
         end try
-        current application's NSLog("Server created")
+        NSLog("Server created: " & theName)
         display alert "Created server"
         updatemenu()
     end newinst_
     on launchserver(theName)
+        NSLog("Preparing to launch server: " & theName)
         set cpCount to 0
         set repeatIndex to 0
         set classPath to ""
@@ -348,6 +356,7 @@ quit
             end try
         end try
         -- Gets the classpath from the json
+        NSLog("Getting classpath from json")
         set theText to splitText((item 2 of splitText(do shell script "cat $HOME'/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".json'", "\"libraries\": ")), "{\"artifact\": {\"path\": \"")
         repeat with i in theText
             set repeatIndex to repeatIndex + 1
@@ -378,7 +387,7 @@ quit
             do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
                     $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
         end try
-        current application's NSLog("Server launched")
+        NSLog("Launched server: " & theName)
     end launchserver
     on launchinst_(sender)
         set cpCount to 0
@@ -424,7 +433,7 @@ quit
         repeat with ii in (paragraphs of theS)
         do shell script "echo '" & ii & "' >> $HOME/'Library/Application Support/Minecraft Server/installations/" & theSerProName's stringValue & "/server.properties'" -- Creates the new server.properties
         end repeat
-        current application's NSLog("Saved server.properties")
+        NSLog("Saved server.properties")
         set theSerEdit's isVisible to false -- Hides the server.properties window
     end saveserverproperties_
     on cancelproperties_(sender)
