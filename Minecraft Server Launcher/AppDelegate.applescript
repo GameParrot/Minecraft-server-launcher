@@ -40,7 +40,7 @@ script AppDelegate
         return theTextItems
     end splitText
     on updatemenu()
-        set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar"
+        set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar" -- Reads the settings file to check if Add to Menu Bar is enabled
         if theMenuEnabled is "1"
             set newMenu to current application's NSMenu's alloc()'s initWithTitle:"Custom"
             newMenu's removeAllItems()
@@ -58,7 +58,7 @@ script AppDelegate
         end if
     end updatemenu
     on checkforupdates_(sender)
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5.2"
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6"
             applyupdates()
         else
         display alert "Up to date" message "You are running the latest version of Minecraft Server Launcher."
@@ -77,72 +77,12 @@ script AppDelegate
         end try
     end applyupdates
     on startupupdatecheck()
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.5.2"
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6"
             applyupdates()
         end if
     end startupupdatecheck
     on launchMenu:sender
-        set cpCount to 0
-        set repeatIndex to 0
-        set classPath to ""
-        set theName to sender's title as text
-        try
-            set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
-            set majorVersion to item 2 of splitText(theVersion, ".")
-            if (majorVersion as number) < 16 then
-                set mainclass to "net.minecraft.server.MinecraftServer"
-            else
-                set mainclass to "net.minecraft.server.Main"
-            end if
-        on error
-            try
-                set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
-                set majorVersion to item 1 of splitText(theVersion, "w")
-                if (majorVersion as number) < 20 then
-                    set mainclass to "net.minecraft.server.MinecraftServer"
-                else
-                    if (majorVersion as number is 20) and item 1 of splitText(item 2 of splitText(theVersion, "w"), "a") as number < 20 then
-                        set mainclass to "net.minecraft.server.MinecraftServer"
-                    else
-                        set mainclass to "net.minecraft.server.Main"
-                    end if
-                end if
-            on error
-                set mainclass to "net.minecraft.server.Main"
-            end try
-        end try
-        -- Gets the classpath from the json
-        set theText to splitText((item 2 of splitText(do shell script "cat $HOME'/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".json'", "\"libraries\": ")), "{\"artifact\": {\"path\": \"")
-        repeat with i in theText
-            set repeatIndex to repeatIndex + 1
-            if repeatIndex < (length of theText) then
-                if cpCount is greater than 0 then
-                    set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"")
-                else
-                    set cpCount to cpCount + 1
-                end if
-            else
-                set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".jar\"")
-            end if
-        end repeat
-        -- Checks settings and launches the server
-        try
-            do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
-            set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & mainclass
-            
-            do shell script "echo '#!/bin/sh
-            cd $HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "'\\''
-            rm /tmp/serverlaunch
-                    exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
-                    do shell script "chmod +x /tmp/serverlaunch
-                    open /tmp/serverlaunch -F -b com.apple.Terminal"
-        on error
-            set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & mainclass
-            
-            do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
-                    $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
-        end try
-        current application's NSLog("Server launched")
+        launchserver(sender's title as text)
     end launchMenu:
     on loadRandomImage()
         if (random number from 1 to 2) is equal to 1 then
@@ -200,68 +140,8 @@ To edit a server from the command line, use -edit servername [UIElement <0> <1>]
 quit
                 else
                 if item 2 of args as text is "-launch"
-                    set cpCount to 0
-                    set repeatIndex to 0
-                    set classPath to ""
-                        set theName to item 3 of args
-                        -- Gets the main class, depending on the version
-                    try
-                        set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
-                        set majorVersion to item 2 of splitText(theVersion, ".")
-                        if (majorVersion as number) < 16 then
-                            set mainclass to "net.minecraft.server.MinecraftServer"
-                        else
-                            set mainclass to "net.minecraft.server.Main"
-                        end if
-                    on error
-                        try
-                            set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
-                            set majorVersion to item 1 of splitText(theVersion, "w")
-                            if (majorVersion as number) < 20 then
-                                set mainclass to "net.minecraft.server.MinecraftServer"
-                            else
-                                if (majorVersion as number is 20) and item 1 of splitText(item 2 of splitText(theVersion, "w"), "a") as number < 20 then
-                                    set mainclass to "net.minecraft.server.MinecraftServer"
-                                else
-                                    set mainclass to "net.minecraft.server.Main"
-                                end if
-                            end if
-                        on error
-                            set mainclass to "net.minecraft.server.Main"
-                        end try
-                    end try
-                    -- Gets the classpath from the json
-                    set theText to splitText((item 2 of splitText(do shell script "cat $HOME'/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".json'", "\"libraries\": ")), "{\"artifact\": {\"path\": \"")
-                    repeat with i in theText
-                        set repeatIndex to repeatIndex + 1
-                        if repeatIndex < (length of theText) then
-                            if cpCount is greater than 0 then
-                                set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"")
-                            else
-                                set cpCount to cpCount + 1
-                            end if
-                        else
-                            set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".jar\"")
-                        end if
-                    end repeat
-                    -- Checks settings and launches the server
-                    try
-                        do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
-                        set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & mainclass
-                        
-                        do shell script "echo '#!/bin/sh
-                        cd $HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "'\\''
-                        rm /tmp/serverlaunch
-                                exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
-                                do shell script "chmod +x /tmp/serverlaunch
-                                open /tmp/serverlaunch -F -b com.apple.Terminal"
-                    on error
-                        set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & mainclass
-                        
-                        do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
-                                $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
-                    end try
-                    quit
+                        launchserver(item 3 of args as text) -- Launches the server
+                        quit
                 else
                 if item 2 of args as text is "-edit"
                     set theName to item 3 of args as text
@@ -291,7 +171,7 @@ quit
                 else
                 log "Ignored Argument: " & item 2 of args as text
                 if (system version of (system info)) is less than 10.14 then
-                    set theLegacyWindow's isVisible to true
+                    set theLegacyWindow's isVisible to true  -- Uses a window that supports older macOS versions if needed.
                 else
                     set theWindow's isVisible to true
                 end if
@@ -308,7 +188,7 @@ quit
         end try
         loadRandomImage()
         try
-            set theUpdateEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck"
+            set theUpdateEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck" -- Checks if auto update is enabled
         if theUpdateEnabled is "1"
             startupupdatecheck()
         end if
@@ -316,7 +196,7 @@ quit
             do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck -bool false"
         end try
         try
-            set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar"
+            set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar" -- Checks if Add to Menu Bar is enabled
             if theMenuEnabled is "1"
                 try
                 createMenu()
@@ -332,7 +212,7 @@ quit
     on preference_(sender)
         set thePreferenceWindow's isVisible to true
         try
-            set theUpdateEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck"
+            set theUpdateEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck" -- Checks if auto update is enabled
             if theUpdateEnabled is "1" then
                 set theUpdateCheckBox's state to true
             else
@@ -370,7 +250,6 @@ quit
         end if
     end toggleemenubar_
 	on applicationShouldTerminate_(sender)
-		-- Insert code here to do any housekeeping before your application quits 
 		return current application's NSTerminateNow
 	end applicationShouldTerminate_
     on idisagree_(sender)
@@ -432,25 +311,19 @@ quit
             do shell script "cp '" & theApppath & "Contents/Resources/MCServer.png' $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'/icon.png"
             do shell script "touch $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'"
         on error
+            do shell script "rm $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
             error number -128
         end try
         current application's NSLog("Server created")
         display alert "Created server"
         updatemenu()
     end newinst_
-    on launchinst_(sender)
+    on launchserver(theName)
         set cpCount to 0
         set repeatIndex to 0
         set classPath to ""
-        set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
         try
-            set theName to item 1 of (choose from list allInstalledVersion with title "Servers" with prompt "Choose a server")
-        on error
-            error number -128
-        end try
-        -- Gets the main class
-        try
-            set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+            set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'" -- Gets the version to launch
             set majorVersion to item 2 of splitText(theVersion, ".")
             if (majorVersion as number) < 16 then
                 set mainclass to "net.minecraft.server.MinecraftServer"
@@ -506,6 +379,19 @@ quit
                     $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
         end try
         current application's NSLog("Server launched")
+    end launchserver
+    on launchinst_(sender)
+        set cpCount to 0
+        set repeatIndex to 0
+        set classPath to ""
+        set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
+        try
+            set theName to item 1 of (choose from list allInstalledVersion with title "Servers" with prompt "Choose a server")
+        on error
+            error number -128
+        end try
+        -- Gets the main class
+        launchserver(theName) -- Launches the server
     end launchinst_
     on editinst_(sender)
         set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
@@ -661,4 +547,9 @@ quit
         do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
         set theJavaExecWindow's isVisible to false
     end resetjavaexec_
+    on resetproperties_(sender)
+        set theName to theServerEditing's stringValue
+        display dialog "Are you sure you want to reset the server.properties?" -- Asks if you want to delete the server
+        do shell script "rm $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "/server.properties'"
+    end resetproperties_
 end script
