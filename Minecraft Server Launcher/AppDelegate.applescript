@@ -61,12 +61,17 @@ script AppDelegate
         end if
     end updatemenu
     on checkforupdates_(sender)
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6.1"
+        updatecheck(true)
+    end checkforupdates_
+    on updatecheck(showAlert)
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6.2" -- Checks to see if the update file does not match the current version
             applyupdates()
         else
-        display alert "Up to date" message "You are running the latest version of Minecraft Server Launcher."
+            if showAlert then
+                display alert "Up to date" message "You are running the latest version of Minecraft Server Launcher."
+            end if
         end if
-    end checkforupdates_
+    end updatecheck
     on applyupdates()
         try
         display alert "Update available!" message "Release notes:
@@ -81,11 +86,6 @@ script AppDelegate
         quit
         end try
     end applyupdates
-    on startupupdatecheck()
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6.1"
-            applyupdates()
-        end if
-    end startupupdatecheck
     on launchMenu:sender
         launchserver(sender's title as text)
     end launchMenu:
@@ -99,19 +99,7 @@ script AppDelegate
         set statusBarItem to statusBar's statusItemWithLength:-1.0
         statusBarItem's setTitle:"Launch Server"
         statusBarItem's setImage:(current application's NSImage's imageNamed:"servermenuicon")
-        set newMenu to current application's NSMenu's alloc()'s initWithTitle:"Custom"
-        newMenu's removeAllItems()
-        set someListInstances to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
-        
-        repeat with i from 1 to number of items in someListInstances
-            set this_item to item i of someListInstances
-            set thisMenuItem to (current application's NSMenuItem's alloc()'s initWithTitle:this_item action:("launchMenu:") keyEquivalent:"")
-            
-            (newMenu's addItem:thisMenuItem)
-            
-            (thisMenuItem's setTarget:me)
-        end repeat
-        statusBarItem's setMenu:newMenu
+        updatemenu()
     end createMenu
     
     on applicationWillFinishLaunching_(aNotification)
@@ -136,13 +124,6 @@ script AppDelegate
             end try
             try
             set args to (current application's NSProcessInfo's processInfo()'s arguments())
-            if item 2 of args as text is "-h" or item 2 of args as text is "--help"
-                NSLog("usage: Minecraft Server Launcher [-launch servername] [-edit servername edit_id value]
-To launch a server from the command line, use '" & item 1 of args as text & "' -launch servername
-To edit a server from the command line, use -edit servername [UIElement <0> <1>] [NoGUI <0> <1>] [Delete] [changeVersion <version>]")
--- Shows the help message
-quit
-                else
                 if item 2 of args as text is "-launch"
                         launchserver(item 3 of args as text) -- Launches the server
                         quit
@@ -173,20 +154,16 @@ quit
                     end if
                     quit
                 else
-                NSLog("Ignored Argument: " & item 2 of args as text)
                 if (system version of (system info)) is less than 10.14 then
                     set theLegacyWindow's isVisible to true  -- Uses a window that supports older macOS versions if needed.
-                    NSLog("WARNING: You are using an older macOS version. For best results, use macOS Mojave or newer.")
                 else
                     set theWindow's isVisible to true
-                end if
                 end if
                 end if
                 end if
             on error
             if (system version of (system info)) is less than 10.14 then
                 set theLegacyWindow's isVisible to true
-                NSLog("WARNING: You are using an older macOS version. For best results, use macOS Mojave or newer.")
             else
                 set theWindow's isVisible to true
             end if
@@ -196,7 +173,7 @@ quit
         try
             set theUpdateEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck" -- Checks if auto update is enabled
         if theUpdateEnabled is "1"
-            startupupdatecheck()
+            updatecheck(false)
         end if
         on error
             do shell script "defaults write ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AutoUpdateCheck -bool false"
@@ -266,7 +243,6 @@ quit
         set theEULAWindow's isVisible to false
         if (system version of (system info)) is less than 10.14 then
             set theLegacyWindow's isVisible to true
-            NSLog("WARNING: You are using an older macOS version. For best results use macOS Mojave or newer.")
         else
             set theWindow's isVisible to true
         end if
@@ -532,7 +508,7 @@ quit
     end changeversion_
     on deleteserver_(sender)
         set theName to theServerEditing's stringValue
-        display dialog "Are you sure you want to delete this server? This action cannot be undone." -- Asks if you want to delete the server
+        display alert "Are you sure you want to delete this server? This action cannot be undone." buttons {"Cancel", "Delete"} cancel button "Cancel"  -- Asks if you want to delete the server
         do shell script "rm -rf $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'
         rm $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
         set theEditWindow's isVisible to false
@@ -558,7 +534,7 @@ quit
     end resetjavaexec_
     on resetproperties_(sender)
         set theName to theServerEditing's stringValue
-        display dialog "Are you sure you want to reset the server.properties?" -- Asks if you want to delete the server
+        display alert "Are you sure you want to reset the server.properties?" buttons {"Cancel", "Reset"} cancel button "Cancel" -- Asks if you want to delete the server properties file
         do shell script "rm $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "/server.properties'"
     end resetproperties_
 end script
