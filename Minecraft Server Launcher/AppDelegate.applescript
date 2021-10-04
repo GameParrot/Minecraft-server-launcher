@@ -32,6 +32,7 @@ script AppDelegate
     property thePreferenceWindow : missing value
     property theMenuCheckBox : missing value
     property theLegacyWindow : missing value
+    property theAboutVersion : missing value
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -64,7 +65,7 @@ script AppDelegate
         updatecheck(true)
     end checkforupdates_
     on updatecheck(showAlert)
-        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to "1.6.2" -- Checks to see if the update file does not match the current version
+        if (do shell script "curl -L 'https://github.com/GameParrot/Minecraft-server-launcher/raw/main/.update/currentversion'") is not equal to current application's version -- Checks to see if the update file does not match the current version
             applyupdates()
         else
             if showAlert then
@@ -81,7 +82,7 @@ script AppDelegate
         rm -rf \"/Applications/Minecraft Server Launcher.app\"
         unzip /tmp/update.zip -d /Applications
         rm /tmp/update.zip
-        open \"/Applications/Minecraft Server Launcher.app\"' | bash > /dev/null 2>&1 & " with administrator privileges
+        open \"/Applications/Minecraft Server Launcher.app\"' | zsh > /dev/null 2>&1 & " with administrator privileges
         NSLog("Updating")
         quit
         end try
@@ -351,7 +352,7 @@ script AppDelegate
             do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
             set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & mainclass
             
-            do shell script "echo '#!/bin/sh
+            do shell script "echo '#!/bin/zsh
             cd $HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "'\\''
             rm /tmp/serverlaunch
                     exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
@@ -416,6 +417,7 @@ script AppDelegate
         set theSerEdit's isVisible to false -- Hides the server.properties window
     end cancelproperties_
     on showabout_(sender)
+        set theAboutVersion's stringValue to "Version: " & current application's version
         set theAbout's isVisible to true -- Shows the about window
     end showabout_
     on githubpage_(sender)
@@ -516,7 +518,7 @@ script AppDelegate
     end deleteserver_
     on edithelp_(sender)
         set theEditHelpWindow's isVisible to true
-    end edithelp__
+    end edithelp_
     on choosejavaexec_(sender)
         set theNewExec to the POSIX Path of (choose file with prompt "Choose new Java Executable:" of type "public.unix-executable")
         do shell script "rm $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
