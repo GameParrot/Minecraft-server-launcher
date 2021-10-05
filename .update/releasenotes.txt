@@ -1,1 +1,2 @@
-Switched to using zsh
+New features:
+New create, launch, and edit UI for macOS Mojave and newer.
