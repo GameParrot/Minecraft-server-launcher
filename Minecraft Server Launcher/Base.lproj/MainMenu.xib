@@ -16,21 +16,32 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="editButton" destination="DTy-kI-2Po" id="m2g-Ec-pFF"/>
                 <outlet property="eulaWeb" destination="wku-ri-CWl" id="e3d-bk-8nM"/>
+                <outlet property="launchButton" destination="E4a-2b-gp4" id="meo-WJ-RhZ"/>
+                <outlet property="newButton" destination="SbK-pg-VPy" id="Rt1-Xg-n67"/>
                 <outlet property="theAbout" destination="JWx-sK-RKL" id="bp6-8C-hdJ"/>
                 <outlet property="theAboutVersion" destination="gZ9-5a-4J7" id="yM9-9V-YbA"/>
                 <outlet property="theBG" destination="8uJ-PI-KFU" id="FSn-bw-onA"/>
+                <outlet property="theCancelButton" destination="74z-dF-lcK" id="OHu-iO-aPR"/>
                 <outlet property="theEULAWindow" destination="HD2-py-CyQ" id="FGU-AC-9aC"/>
+                <outlet property="theEditButton" destination="MPl-BM-jt2" id="kRJ-ar-IaI"/>
                 <outlet property="theEditHelpWindow" destination="lWW-0S-C2Y" id="dhv-qT-RYL"/>
                 <outlet property="theEditWindow" destination="get-1l-uiV" id="Rxa-5z-wIH"/>
+                <outlet property="theLaunchButton" destination="6bq-1h-zf2" id="qxe-hz-je5"/>
                 <outlet property="theLegacyWindow" destination="iUS-v4-8si" id="vBB-UY-3VP"/>
                 <outlet property="theMenuCheckBox" destination="rUc-AI-zYl" id="6WF-B7-mxZ"/>
+                <outlet property="theNameText" destination="JEV-gC-L0I" id="HM5-eA-mPE"/>
+                <outlet property="theNewCancel" destination="U23-D0-3fm" id="nNU-PR-D31"/>
+                <outlet property="theNewCreate" destination="yPS-jn-l0V" id="hhy-6f-X9r"/>
+                <outlet property="theNewVersion" destination="Hk8-3c-A5x" id="UGx-MT-vHM"/>
                 <outlet property="theNoGUIButton" destination="6Yv-wk-JK9" id="bSa-Ji-JEm"/>
                 <outlet property="thePreferenceWindow" destination="lkO-jK-QNT" id="zc4-Ib-VTL"/>
                 <outlet property="theRenameField" destination="2Tt-7k-xKs" id="aH3-8v-SnY"/>
                 <outlet property="theSerEdit" destination="gpB-FY-hJW" id="8BL-Z3-mBN"/>
                 <outlet property="theSerProName" destination="eFs-RX-t7q" id="cv5-FG-EqP"/>
                 <outlet property="theSerText" destination="xc9-Kl-8MP" id="UJ3-Bv-9zb"/>
+                <outlet property="theServerChooser" destination="aRi-Xk-ddQ" id="lEa-Gm-D95"/>
                 <outlet property="theServerEditing" destination="Cx2-8e-8Ur" id="dn5-nX-EYu"/>
                 <outlet property="theUIElementButton" destination="n58-ru-kkW" id="ajl-lZ-A2c"/>
                 <outlet property="theUpdateCheckBox" destination="TsJ-5z-Qi8" id="dY4-EO-IGM"/>
@@ -442,6 +453,104 @@
                             <action selector="newinst:" target="Voe-Tx-rLC" id="TfC-lH-iwv"/>
                         </connections>
                     </button>
+                    <popUpButton hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aRi-Xk-ddQ">
+                        <rect key="frame" x="121" y="163" width="389" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Choose Server" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="7z6-UY-bUX" id="dgH-mK-Dd0">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="Ncp-dY-eK4">
+                                <items>
+                                    <menuItem title="Choose Server" state="on" id="7z6-UY-bUX"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6bq-1h-zf2">
+                        <rect key="frame" x="331" y="120" width="79" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Launch" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Eyp-Tb-TRL">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="launchdirect:" target="Voe-Tx-rLC" id="f53-mE-bup"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74z-dF-lcK">
+                        <rect key="frame" x="224" y="120" width="76" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="P71-Xo-elW">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelserver:" target="Voe-Tx-rLC" id="YTL-9B-LF8"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MPl-BM-jt2">
+                        <rect key="frame" x="340" y="120" width="58" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Edit" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="L7N-p6-GmH">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editdirect:" target="Voe-Tx-rLC" id="eBi-el-se2"/>
+                        </connections>
+                    </button>
+                    <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JEV-gC-L0I">
+                        <rect key="frame" x="166" y="250" width="299" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" title="Untitled Server" drawsBackground="YES" id="afC-dO-8vM">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hk8-3c-A5x">
+                        <rect key="frame" x="199" y="193" width="233" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Version" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="A9W-rj-TYP" id="EFB-3Y-yyc">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="DGX-xn-1cr">
+                                <items>
+                                    <menuItem title="Version" state="on" id="A9W-rj-TYP"/>
+                                    <menuItem title="Item 2" id="UUf-b0-yuc"/>
+                                    <menuItem title="Item 3" id="cb3-Py-WhQ"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U23-D0-3fm">
+                        <rect key="frame" x="195" y="160" width="76" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N1B-A4-b1T">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelnew:" target="Voe-Tx-rLC" id="p9H-sK-Qlt"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yPS-jn-l0V">
+                        <rect key="frame" x="360" y="160" width="75" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Create" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="p1r-Pn-4cX">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="createNew:" target="Voe-Tx-rLC" id="dbS-bO-ZEz"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <point key="canvasLocation" x="488.5" y="-63.5"/>
@@ -824,7 +933,7 @@ Gw
                             <string key="title">UIElement - If enabled, server will appear as a window but not on the dock.
 No GUI - If enabled, server will open with Terminal.
 Rename - Renames the server.
-Change icon - Changes the dock icon for the server.
+Change icon - Changes the dock icon and icon in menus for the server.
 Open server.properties - Opens the server.properties file.
 Open server folder - Shows the server folder in Finder.
 Change version - Changes the server version.

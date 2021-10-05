@@ -33,6 +33,17 @@ script AppDelegate
     property theMenuCheckBox : missing value
     property theLegacyWindow : missing value
     property theAboutVersion : missing value
+    property theServerChooser : missing value
+    property newButton : missing value
+    property editButton : missing value
+    property launchButton : missing value
+    property theLaunchButton : missing value
+    property theEditButton : missing value
+    property theCancelButton : missing value
+    property theNameText : missing value
+    property theNewVersion : missing value
+    property theNewCancel : missing value
+    property theNewCreate : missing value
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -40,22 +51,46 @@ script AppDelegate
         set AppleScript's text item delimiters to ""
         return theTextItems
     end splitText
+    on hideButtons()
+        newButton's setHidden:true
+        editButton's setHidden:true
+        launchButton's setHidden:true
+    end hideButtons
+    on showButtons()
+        newButton's setHidden:false
+        editButton's setHidden:false
+        launchButton's setHidden:false
+    end showButtons
+    on createThumbnailImage(imgPath) -- this function creates a 16x16 image for a server icon
+        set sourceImg to current application's NSImage's alloc()'s initWithContentsOfFile:imgPath
+        set scaledImg to current application's NSImage's alloc()'s initWithSize:(current application's NSMakeSize(16, 16))
+        scaledImg's lockFocus()
+        set sourceImg's size to (current application's NSMakeSize(16, 16))
+        set (current application's NSGraphicsContext's currentContext())'s imageInterpolation to 3
+        sourceImg's drawInRect:(current application's NSMakeRect(0.0, 0.0, 16, 16))
+        scaledImg's unlockFocus()
+        set theResult to (current application's NSBitmapImageRep's imageRepWithData:(scaledImg's TIFFRepresentation))'s representationUsingType:(current application's NSPNGFileType) |properties|:(current application's NSDictionary's dictionary())
+        return current application's NSImage's alloc's initWithData:theResult
+    end createThumbnailImage
     on NSLog(theLogText)
         current application's NoTimestampLog's notimestamp_(theLogText)
     end NSLog
     on updatemenu()
         set theMenuEnabled to do shell script "defaults read ~/Library/Preferences/com.gameparrot.Minecraft-server-launcher AddToMenuBar" -- Reads the settings file to check if Add to Menu Bar is enabled
         if theMenuEnabled is "1"
+            set theHomePath to do shell script "echo \"$HOME\""
             set newMenu to current application's NSMenu's alloc()'s initWithTitle:"Custom"
             newMenu's removeAllItems()
             set someListInstances to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
             
             repeat with i from 1 to number of items in someListInstances
+                set theItemImage to theHomePath & "/Library/Application Support/Minecraft Server/installations/" & item i of someListInstances & "/icon.png"
                 set this_item to item i of someListInstances
                 set thisMenuItem to (current application's NSMenuItem's alloc()'s initWithTitle:this_item action:("launchMenu:") keyEquivalent:"")
-                
+                try
+                    thisMenuItem's setImage:(createThumbnailImage(theItemImage))
+                end try
                 (newMenu's addItem:thisMenuItem)
-                
                 (thisMenuItem's setTarget:me)
             end repeat
             statusBarItem's setMenu:newMenu
@@ -155,6 +190,7 @@ script AppDelegate
                     end if
                     quit
                 else
+                
                 if (system version of (system info)) is less than 10.14 then
                     set theLegacyWindow's isVisible to true  -- Uses a window that supports older macOS versions if needed.
                 else
@@ -254,11 +290,88 @@ script AppDelegate
         do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
         do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
     end iagree_
+    on showCreateUI()
+        theNewVersion's removeAllItems()
+        theNameText's setHidden:false
+        theNewVersion's setHidden:false
+        hideButtons()
+        theNewCancel's setHidden:false
+        theNewCreate's setHidden:false
+        set theSupportedVersions to {}
+        repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
+            try
+                set majorVersion to item 2 of splitText(i, ".")
+                if (majorVersion as number) > 12 then
+                    set end of theSupportedVersions to (i as text)
+                end if
+            on error
+                try
+                    set majorVersion to item 1 of splitText(i, "w")
+                    if (majorVersion as number) > 17 then
+                        set end of theSupportedVersions to (i as text)
+                    end if
+                end try
+            end try
+        end repeat
+        theNewVersion's addItemsWithTitles:theSupportedVersions
+    end showCreateUI
+    on hideCreateUI()
+        theNameText's setHidden:true
+        theNewVersion's setHidden:true
+        showButtons()
+        theNewCancel's setHidden:true
+        theNewCreate's setHidden:true
+    end hideCreateUI
+    on cancelnew_(sender)
+        hideCreateUI()
+    end cancalnew_
+    on createNew_(sender)
+        createServer(theNameText's stringValue as string, theNewVersion's selectedItem's title as text)
+        hideCreateUI()
+    end createNew_
     on newinst_(sender)
-        set cpCount to 0
-        set repeatIndex to 0
-        set classPath to ""
-        set theName to text returned of (display dialog "Server name" default answer "Untitled Server" with title "New Server") -- Asks for the name
+        if not (system version of (system info)) is less than 10.14 then
+            showCreateUI()
+        else
+            set cpCount to 0
+            set repeatIndex to 0
+            set classPath to ""
+            set theName to text returned of (display dialog "Server name" default answer "Untitled Server" with title "New Server") -- Asks for the name
+            try
+                set allInst to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'") -- Checks if a server with the specified name already exists
+            on error
+                set allInst to ""
+            end try
+            if allInst contains theName then
+                display alert "Already exists"
+                error number -128
+            end if
+            try
+                -- Lists all the versions
+                set theSupportedVersions to {}
+                repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
+                    try
+                        set majorVersion to item 2 of splitText(i, ".")
+                        if (majorVersion as number) > 12 then
+                            set end of theSupportedVersions to (i as text)
+                        end if
+                    on error
+                        try
+                            set majorVersion to item 1 of splitText(i, "w")
+                            if (majorVersion as number) > 17 then
+                                set end of theSupportedVersions to (i as text)
+                            end if
+                        end try
+                    end try
+                end repeat
+                set theVersion to item 1 of (choose from list theSupportedVersions with title "Minecraft versions" with prompt "Choose Minecraft verson. The version will not work if it is modded or if it has never been ran in the launcher.") -- Asks the user for the version they want
+                createServer(theName, theVersion)
+            on error
+                error number -128
+            end try
+        end if
+    end newinst_
+    on createServer(theName, theVersion)
         try
             set allInst to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'") -- Checks if a server with the specified name already exists
         on error
@@ -268,40 +381,17 @@ script AppDelegate
             display alert "Already exists"
             error number -128
         end if
-        do shell script "touch $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'" -- Creates the version file
-        try
-            -- Lists all the versions
-            set theSupportedVersions to {}
-            repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
-                try
-                    set majorVersion to item 2 of splitText(i, ".")
-                    if (majorVersion as number) > 12 then
-                        set end of theSupportedVersions to (i as text)
-                    end if
-                on error
-                    try
-                        set majorVersion to item 1 of splitText(i, "w")
-                        if (majorVersion as number) > 17 then
-                            set end of theSupportedVersions to (i as text)
-                        end if
-                    end try
-                end try
-            end repeat
-            set theVersion to item 1 of (choose from list theSupportedVersions with title "Minecraft versions" with prompt "Choose Minecraft verson. The version will not work if it is modded or if it has never been ran in the launcher.") -- Asks the user for the version they want
-            do shell script "echo '" & theVersion & "' > $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
-            do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'"
-            do shell script "echo 'eula=true' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'/eula.txt"
-            set theApppath to the POSIX path of (do shell script "echo '" & (path to current application as text) & "'")
-            do shell script "cp '" & theApppath & "Contents/Resources/MCServer.png' $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'/icon.png"
-            do shell script "touch $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'"
-        on error
-            do shell script "rm $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
-            error number -128
-        end try
+        do shell script "touch $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+        do shell script "echo '" & theVersion & "' > $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+        do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'"
+        do shell script "echo 'eula=true' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'/eula.txt"
+        set theApppath to the POSIX path of (do shell script "echo '" & (path to current application as text) & "'")
+        do shell script "cp '" & theApppath & "Contents/Resources/MCServer.png' $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'/icon.png"
+        do shell script "touch $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'"
         NSLog("Server created: " & theName)
         display alert "Created server"
         updatemenu()
-    end newinst_
+    end createServer
     on launchserver(theName)
         NSLog("Preparing to launch server: " & theName)
         set cpCount to 0
@@ -366,26 +456,80 @@ script AppDelegate
         end try
         NSLog("Launched server: " & theName)
     end launchserver
+    on addToPopUp(theList, isLaunch)
+        hideButtons()
+        if isLaunch then
+            theLaunchButton's setHidden:false
+        else
+            theEditButton's setHidden:false
+        end if
+        theCancelButton's setHidden:false
+        theServerChooser's setHidden:false
+        theServerChooser's removeAllItems()
+        set theHomePath to do shell script "echo \"$HOME\""
+        repeat with i in theList
+            set theItemImage to theHomePath & "/Library/Application Support/Minecraft Server/installations/" & i & "/icon.png"
+            theServerChooser's addItemWithTitle:i
+            try
+                theServerChooser's lastItem's setImage:createThumbnailImage(theItemImage)
+            end try
+        end repeat
+    end addToPopUp
+    on launchdirect_(sender)
+        launchserver(theServerChooser's selectedItem's title as text)
+        showButtons()
+        theLaunchButton's setHidden:true
+        theEditButton's setHidden:true
+        theCancelButton's setHidden:true
+        theServerChooser's setHidden:true
+    end launchdirect_
+    on cancelserver_(sender)
+        showButtons()
+        theLaunchButton's setHidden:true
+        theEditButton's setHidden:true
+        theCancelButton's setHidden:true
+        theServerChooser's setHidden:true
+    end cancelserver_
     on launchinst_(sender)
-        set cpCount to 0
-        set repeatIndex to 0
-        set classPath to ""
-        set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
-        try
-            set theName to item 1 of (choose from list allInstalledVersion with title "Servers" with prompt "Choose a server")
-        on error
-            error number -128
-        end try
-        -- Gets the main class
-        launchserver(theName) -- Launches the server
+        if not (system version of (system info)) is less than 10.14 then
+            set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
+            addToPopUp(allInstalledVersion, true)
+        else
+            set cpCount to 0
+            set repeatIndex to 0
+            set classPath to ""
+            set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
+            try
+                set theName to item 1 of (choose from list allInstalledVersion with title "Servers" with prompt "Choose a server")
+            on error
+                error number -128
+            end try
+            launchserver(theName) -- Launches the server
+        end if
     end launchinst_
     on editinst_(sender)
-        set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
-        try
-            set theName to item 1 of (choose from list allInstalledVersion with title "Servers" with prompt "Choose a server")
-        on error
-            error number -128
-        end try
+        if not (system version of (system info)) is less than 10.14 then
+            set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
+            addToPopUp(allInstalledVersion, false)
+        else
+            set allInstalledVersion to paragraphs of (do shell script "ls $HOME'/Library/Application Support/Minecraft Server/installations'")
+            try
+                set theName to item 1 of (choose from list allInstalledVersion with title "Servers" with prompt "Choose a server")
+            on error
+                error number -128
+            end try
+            prepareEdit(theName)
+        end if
+    end editinst_
+    on editdirect_(sender)
+        prepareEdit(theServerChooser's selectedItem's title as text)
+        showButtons()
+        theLaunchButton's setHidden:true
+        theEditButton's setHidden:true
+        theCancelButton's setHidden:true
+        theServerChooser's setHidden:true
+    end editdirect_
+    on prepareEdit(theName)
         if (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") is "-Dapple.awt.UIElement=true" then
             set theUIElementButton's state to true
         else
@@ -401,7 +545,7 @@ script AppDelegate
         set theEditWindow's title to "Editing " & theName
         set theServerEditing's stringValue to theName
         set theRenameField's stringValue to theName
-    end editinst_
+    end prepareEdit
     on saveserverproperties_(sender)
         set theServerProperties to theSerText's textStorage() -- Gets the text from the server.properties editor
         set theSavedText to theServerProperties's |string|() -- Converts the text from the server.properties editor to a string
