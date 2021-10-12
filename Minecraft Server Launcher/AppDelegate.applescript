@@ -44,6 +44,9 @@ script AppDelegate
     property theNewVersion : missing value
     property theNewCancel : missing value
     property theNewCreate : missing value
+    property theVersionChooser : missing value
+    property theJVMArg : missing value
+    property theServerArg : missing value
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -51,12 +54,18 @@ script AppDelegate
         set AppleScript's text item delimiters to ""
         return theTextItems
     end splitText
-    on hideButtons()
+    on getPositionOfItemInList(theItem, theList)
+        repeat with a from 1 to count of theList
+            if item a of theList is theItem then return a
+        end repeat
+        return 0
+    end getPositionOfItemInList
+    on hideButtons() -- Hides the main UI
         newButton's setHidden:true
         editButton's setHidden:true
         launchButton's setHidden:true
     end hideButtons
-    on showButtons()
+    on showButtons() -- Shows the main UI
         newButton's setHidden:false
         editButton's setHidden:false
         launchButton's setHidden:false
@@ -292,7 +301,7 @@ script AppDelegate
     end iagree_
     on showCreateUI()
         theNewVersion's removeAllItems()
-        theNameText's setHidden:false
+        theNameText's setHidden:false -- Shows the create UI
         theNewVersion's setHidden:false
         hideButtons()
         theNewCancel's setHidden:false
@@ -313,11 +322,11 @@ script AppDelegate
                 end try
             end try
         end repeat
-        theNewVersion's addItemsWithTitles:theSupportedVersions
+        theNewVersion's addItemsWithTitles:theSupportedVersions -- Sets the version chooser list to all of the versions
     end showCreateUI
     on hideCreateUI()
         theNameText's setHidden:true
-        theNewVersion's setHidden:true
+        theNewVersion's setHidden:true -- Hides the create UI
         showButtons()
         theNewCancel's setHidden:true
         theNewCreate's setHidden:true
@@ -439,20 +448,30 @@ script AppDelegate
         end repeat
         -- Checks settings and launches the server
         try
+            set jvmargs to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/jvmargs'"
+        on error
+            set jvmargs to ""
+        end try
+        try
+            set serverargs to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/serverargs'"
+        on error
+            set serverargs to ""
+        end try
+        try
             do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
             set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & mainclass
             
             do shell script "echo '#!/bin/zsh
             cd $HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "'\\''
             rm /tmp/serverlaunch
-                    exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui' > /tmp/serverlaunch"
+                    exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & jvmargs & " " & classPath & " nogui " & serverargs & "' > /tmp/serverlaunch"
                     do shell script "chmod +x /tmp/serverlaunch
                     open /tmp/serverlaunch -F -b com.apple.Terminal"
         on error
             set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & mainclass
             
             do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
-                    $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " > /dev/null 2>&1 & "
+                    $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & jvmargs & " " & classPath & " " & serverargs & "> /dev/null 2>&1 & "
         end try
         NSLog("Launched server: " & theName)
     end launchserver
@@ -463,7 +482,7 @@ script AppDelegate
         else
             theEditButton's setHidden:false
         end if
-        theCancelButton's setHidden:false
+        theCancelButton's setHidden:false -- Shows the launch/edit UI
         theServerChooser's setHidden:false
         theServerChooser's removeAllItems()
         set theHomePath to do shell script "echo \"$HOME\""
@@ -479,14 +498,14 @@ script AppDelegate
         launchserver(theServerChooser's selectedItem's title as text)
         showButtons()
         theLaunchButton's setHidden:true
-        theEditButton's setHidden:true
+        theEditButton's setHidden:true -- Hides the launch/edit UI
         theCancelButton's setHidden:true
         theServerChooser's setHidden:true
     end launchdirect_
     on cancelserver_(sender)
         showButtons()
         theLaunchButton's setHidden:true
-        theEditButton's setHidden:true
+        theEditButton's setHidden:true -- Hides the launch/edit UI
         theCancelButton's setHidden:true
         theServerChooser's setHidden:true
     end cancelserver_
@@ -526,7 +545,7 @@ script AppDelegate
         showButtons()
         theLaunchButton's setHidden:true
         theEditButton's setHidden:true
-        theCancelButton's setHidden:true
+        theCancelButton's setHidden:true -- Hides the launch/edit UI
         theServerChooser's setHidden:true
     end editdirect_
     on prepareEdit(theName)
@@ -545,7 +564,38 @@ script AppDelegate
         set theEditWindow's title to "Editing " & theName
         set theServerEditing's stringValue to theName
         set theRenameField's stringValue to theName
+        try
+            set theJVMArg's stringValue to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/jvmargs'"
+        end try
+        try
+            set theServerArg's stringValue to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/serverargs'"
+        end try
+        try
+            set theSupportedVersions to {} -- Gets all the supported versions
+            repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
+                try
+                    set majorVersion to item 2 of splitText(i, ".")
+                    if (majorVersion as number) > 12 then
+                        set end of theSupportedVersions to (i as text)
+                    end if
+                on error
+                    try
+                        set majorVersion to item 1 of splitText(i, "w")
+                        if (majorVersion as number) > 17 then
+                            set end of theSupportedVersions to (i as text)
+                        end if
+                    end try
+                end try
+            end repeat
+            theVersionChooser's removeAllItems()
+            theVersionChooser's addItemsWithTitles:theSupportedVersions
+            set theCurrentVersion to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+             theVersionChooser's selectItemAtIndex:(getPositionOfItemInList(theCurrentVersion, theSupportedVersions) - 1)
+        end try
     end prepareEdit
+    on bringserverstofront_(sender)
+        do shell script "open $HOME/'Library/Application Support/Minecraft Server/Minecraft Server.app'"
+    end bringserverstofront_
     on saveserverproperties_(sender)
         set theServerProperties to theSerText's textStorage() -- Gets the text from the server.properties editor
         set theSavedText to theServerProperties's |string|() -- Converts the text from the server.properties editor to a string
@@ -624,6 +674,26 @@ script AppDelegate
             display alert "Error: server.properties not found." message "Try launching the server." as critical
         end try
     end openproperties_
+    on resetjvm_(sender)
+        set theName to theServerEditing's stringValue
+        set theJVMArg's stringValue to ""
+        do shell script "rm $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/jvmargs'"
+    end resetjvm_
+    on resetserverargs_(sender)
+        set theName to theServerEditing's stringValue
+        set theServerArg's stringValue to ""
+        do shell script "rm $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/serverargs'"
+    end resetserverargs_
+    on savejvm_(sender)
+        set theName to theServerEditing's stringValue
+        set theArgs to theJVMArg's stringValue as text
+        do shell script "echo '" & theArgs & "' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/jvmargs'"
+    end savejvm_
+    on saveserverargs_(sender)
+        set theName to theServerEditing's stringValue
+        set theArgs to theServerArg's stringValue as text
+        do shell script "echo '" & theArgs & "' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/serverargs'"
+    end saveserverargs_
     on openfolder_(sender)
         set theName to theServerEditing's stringValue
         do shell script "open -R $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "'" -- Opens the server folder in Finder
@@ -631,24 +701,7 @@ script AppDelegate
     on changeversion_(sender)
         set theName to theServerEditing's stringValue
         try
-            -- Lists all the versions
-            set theSupportedVersions to {}
-            repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
-                try
-                    set majorVersion to item 2 of splitText(i, ".")
-                    if (majorVersion as number) > 12 then
-                        set end of theSupportedVersions to (i as text)
-                    end if
-                on error
-                    try
-                        set majorVersion to item 1 of splitText(i, "w")
-                        if (majorVersion as number) > 17 then
-                            set end of theSupportedVersions to (i as text)
-                        end if
-                    end try
-                end try
-            end repeat
-            set theVersion to item 1 of (choose from list theSupportedVersions with title "Minecraft versions" with prompt "Choose Minecraft verson. The version will not work if it is modded or if it has never been ran in the launcher.")
+            set theVersion to theVersionChooser's selectedItem's title as text
             do shell script "echo '" & theVersion & "' > $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
         end try
     end changeversion_

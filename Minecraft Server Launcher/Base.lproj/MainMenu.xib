@@ -28,6 +28,7 @@
                 <outlet property="theEditButton" destination="MPl-BM-jt2" id="kRJ-ar-IaI"/>
                 <outlet property="theEditHelpWindow" destination="lWW-0S-C2Y" id="dhv-qT-RYL"/>
                 <outlet property="theEditWindow" destination="get-1l-uiV" id="Rxa-5z-wIH"/>
+                <outlet property="theJVMArg" destination="K9z-mj-kNv" id="y2g-CB-ev3"/>
                 <outlet property="theLaunchButton" destination="6bq-1h-zf2" id="qxe-hz-je5"/>
                 <outlet property="theLegacyWindow" destination="iUS-v4-8si" id="vBB-UY-3VP"/>
                 <outlet property="theMenuCheckBox" destination="rUc-AI-zYl" id="6WF-B7-mxZ"/>
@@ -41,10 +42,12 @@
                 <outlet property="theSerEdit" destination="gpB-FY-hJW" id="8BL-Z3-mBN"/>
                 <outlet property="theSerProName" destination="eFs-RX-t7q" id="cv5-FG-EqP"/>
                 <outlet property="theSerText" destination="xc9-Kl-8MP" id="UJ3-Bv-9zb"/>
+                <outlet property="theServerArg" destination="C3n-Ky-qRt" id="n9Q-Dy-HeF"/>
                 <outlet property="theServerChooser" destination="aRi-Xk-ddQ" id="lEa-Gm-D95"/>
                 <outlet property="theServerEditing" destination="Cx2-8e-8Ur" id="dn5-nX-EYu"/>
                 <outlet property="theUIElementButton" destination="n58-ru-kkW" id="ajl-lZ-A2c"/>
                 <outlet property="theUpdateCheckBox" destination="TsJ-5z-Qi8" id="dY4-EO-IGM"/>
+                <outlet property="theVersionChooser" destination="i2C-2f-fvw" id="FBV-HF-aWE"/>
                 <outlet property="theWindow" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -366,6 +369,13 @@
                                 <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES" command="YES"/>
                                 <connections>
                                     <action selector="performZoom:" target="-1" id="DIl-cC-cCs"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="5ud-nW-JYE"/>
+                            <menuItem title="Bring Server to front" id="rVL-Q0-Mf8">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="bringserverstofront:" target="Voe-Tx-rLC" id="ooX-UJ-fKP"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
@@ -770,14 +780,14 @@ Gw
         </window>
         <window title="Editing Server" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="get-1l-uiV">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <rect key="contentRect" x="797" y="453" width="485" height="295"/>
+            <rect key="contentRect" x="797" y="453" width="485" height="352"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1127"/>
             <view key="contentView" id="csE-Qv-LUD">
-                <rect key="frame" x="0.0" y="0.0" width="485" height="295"/>
+                <rect key="frame" x="0.0" y="0.0" width="485" height="352"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n58-ru-kkW">
-                        <rect key="frame" x="197" y="258" width="88" height="18"/>
+                        <rect key="frame" x="197" y="315" width="88" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="UIElement" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="aYS-xv-spv">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -788,7 +798,7 @@ Gw
                         </connections>
                     </button>
                     <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cx2-8e-8Ur">
-                        <rect key="frame" x="0.0" y="279" width="38" height="16"/>
+                        <rect key="frame" x="0.0" y="336" width="38" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="name" id="HSZ-c8-C7C">
                             <font key="font" metaFont="system"/>
@@ -797,7 +807,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Yv-wk-JK9">
-                        <rect key="frame" x="197" y="236" width="70" height="18"/>
+                        <rect key="frame" x="197" y="293" width="70" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="No GUI" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="IR4-8N-USD">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -808,7 +818,7 @@ Gw
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Tt-7k-xKs">
-                        <rect key="frame" x="85" y="208" width="239" height="21"/>
+                        <rect key="frame" x="85" y="265" width="239" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Name" drawsBackground="YES" id="5b5-jY-OGi">
                             <font key="font" metaFont="system"/>
@@ -817,7 +827,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3lc-ds-6ut">
-                        <rect key="frame" x="325" y="201" width="83" height="32"/>
+                        <rect key="frame" x="325" y="258" width="83" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Rename" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MYS-Y0-bxe">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -828,7 +838,7 @@ Gw
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SbU-0g-O1O">
-                        <rect key="frame" x="187" y="173" width="110" height="32"/>
+                        <rect key="frame" x="187" y="230" width="110" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Change icon" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zIk-B0-gh2">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -839,7 +849,7 @@ Gw
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1LX-8N-8nf">
-                        <rect key="frame" x="156" y="141" width="174" height="32"/>
+                        <rect key="frame" x="156" y="198" width="174" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Open server.properties" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="f88-p7-olh">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -850,7 +860,7 @@ Gw
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3PV-Q3-JRo">
-                        <rect key="frame" x="169" y="109" width="148" height="32"/>
+                        <rect key="frame" x="169" y="166" width="148" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Open server folder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="n8o-pE-8tc">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -860,19 +870,8 @@ Gw
                             <action selector="openfolder:" target="Voe-Tx-rLC" id="8eQ-cb-RCL"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-9e-xSg">
-                        <rect key="frame" x="180" y="77" width="128" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Change version" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ed7-Kj-hhx">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="changeversion:" target="Voe-Tx-rLC" id="2c0-7E-i0r"/>
-                        </connections>
-                    </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dwM-yI-bcB">
-                        <rect key="frame" x="187" y="45" width="115" height="32"/>
+                        <rect key="frame" x="187" y="102" width="115" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Delete server" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bZC-LS-U8Q">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -883,7 +882,7 @@ Gw
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OSd-va-aS4">
-                        <rect key="frame" x="155" y="13" width="176" height="32"/>
+                        <rect key="frame" x="155" y="70" width="176" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Reset server.properties" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HOO-50-aCU">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -893,8 +892,96 @@ Gw
                             <action selector="resetproperties:" target="Voe-Tx-rLC" id="Tev-Ni-1eR"/>
                         </connections>
                     </button>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i2C-2f-fvw">
+                        <rect key="frame" x="160" y="138" width="167" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="KFw-tA-cdl" id="k51-Cw-Hxd">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="anI-st-ie1">
+                                <items>
+                                    <menuItem title="Item 1" state="on" id="KFw-tA-cdl"/>
+                                    <menuItem title="Item 2" id="7fY-w6-bCf"/>
+                                    <menuItem title="Item 3" id="HOt-BS-2gK"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-9e-xSg">
+                        <rect key="frame" x="324" y="135" width="128" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Change version" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ed7-Kj-hhx">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="changeversion:" target="Voe-Tx-rLC" id="2c0-7E-i0r"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K9z-mj-kNv">
+                        <rect key="frame" x="47" y="48" width="288" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="JVM args (blank for none)" drawsBackground="YES" id="Ld1-Yt-U6h">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C3n-Ky-qRt">
+                        <rect key="frame" x="47" y="17" width="288" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Additional server args (blank for none)" drawsBackground="YES" id="4jW-l2-LV1">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hub-tT-xQU">
+                        <rect key="frame" x="336" y="42" width="64" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3YX-MC-Fex">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="savejvm:" target="Voe-Tx-rLC" id="DGq-TY-yG8"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jTP-4Q-zDP">
+                        <rect key="frame" x="336" y="10" width="64" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rgy-bd-4Sw">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="saveserverargs:" target="Voe-Tx-rLC" id="Ubs-Ev-r1L"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EIi-Do-CUd">
+                        <rect key="frame" x="391" y="42" width="69" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="OUi-AM-Hoi">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="resetjvm:" target="Voe-Tx-rLC" id="d8T-Ck-R64"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FTH-zi-Rwj">
+                        <rect key="frame" x="391" y="10" width="69" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ujW-bv-Up6">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="resetserverargs:" target="Voe-Tx-rLC" id="1Uw-6B-GxT"/>
+                        </connections>
+                    </button>
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FSd-uM-9sy">
-                        <rect key="frame" x="455" y="2" width="25" height="25"/>
+                        <rect key="frame" x="458" y="-3" width="25" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QDF-8M-Cv1">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -906,18 +993,18 @@ Gw
                     </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-134.5" y="509.5"/>
+            <point key="canvasLocation" x="-134.5" y="538"/>
         </window>
         <window title="Editing Help" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="lWW-0S-C2Y">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <rect key="contentRect" x="769" y="468" width="480" height="180"/>
+            <rect key="contentRect" x="769" y="468" width="480" height="221"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1127"/>
             <view key="contentView" id="25z-Ky-qRx">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="180"/>
+                <rect key="frame" x="0.0" y="0.0" width="480" height="221"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="KJR-Kx-cTp">
-                        <rect key="frame" x="-2" y="160" width="484" height="16"/>
+                        <rect key="frame" x="-2" y="201" width="484" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" selectable="YES" alignment="center" title="Edit options:" id="so2-Dw-k94">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -926,11 +1013,11 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="fA2-7d-6g5">
-                        <rect key="frame" x="-2" y="0.0" width="484" height="162"/>
+                        <rect key="frame" x="-2" y="0.0" width="484" height="203"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" selectable="YES" alignment="left" id="lb4-7k-xvu">
                             <font key="font" usesAppearanceFont="YES"/>
-                            <string key="title">UIElement - If enabled, server will appear as a window but not on the dock.
+                            <mutableString key="title">UIElement - If enabled, server will appear as a window but not on the dock.
 No GUI - If enabled, server will open with Terminal.
 Rename - Renames the server.
 Change icon - Changes the dock icon and icon in menus for the server.
@@ -938,14 +1025,16 @@ Open server.properties - Opens the server.properties file.
 Open server folder - Shows the server folder in Finder.
 Change version - Changes the server version.
 Delete server - Deletes the server.
-Reset server.properties - Deletes the server.properties file.</string>
+Reset server.properties - Deletes the server.properties file.
+JVM args - Additional JVM arguments such as -Xmx&lt;size&gt;
+Additional server args - server arguments such as --port</mutableString>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-710" y="135"/>
+            <point key="canvasLocation" x="-710" y="155.5"/>
         </window>
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="lkO-jK-QNT" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>

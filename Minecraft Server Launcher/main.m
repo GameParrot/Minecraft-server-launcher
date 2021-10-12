@@ -15,7 +15,7 @@
 
 +(void)notimestamp:(NSString *)theLog
 {
-NSLog(theLog);
+NSLog(@"%@", theLog);
 }
 @end
 int main(int argc, const char * argv[]) {
