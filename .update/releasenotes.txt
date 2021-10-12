@@ -1,2 +1,4 @@
 New features:
-New create, launch, and edit UI for macOS Mojave and newer.
+- Edit JVM arguments
+- Edit server arguments
+- Bring server window to front option
