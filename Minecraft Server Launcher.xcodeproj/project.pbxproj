@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C45EF684272A0B21009AD894 /* ServerLaunch.sh in Resources */ = {isa = PBXBuildFile; fileRef = C45EF683272A0B21009AD894 /* ServerLaunch.sh */; };
 		C46EA18426D57E6400BFD926 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46EA18326D57E6400BFD926 /* AppleScriptObjC.framework */; };
 		C46EA18726D57E6400BFD926 /* AppDelegate.applescript in Sources */ = {isa = PBXBuildFile; fileRef = C46EA18626D57E6400BFD926 /* AppDelegate.applescript */; };
 		C46EA18926D57E6400BFD926 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C46EA18826D57E6400BFD926 /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C45EF683272A0B21009AD894 /* ServerLaunch.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ServerLaunch.sh; sourceTree = "<group>"; };
 		C46EA18026D57E6400BFD926 /* Minecraft Server Launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Minecraft Server Launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C46EA18326D57E6400BFD926 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
 		C46EA18626D57E6400BFD926 /* AppDelegate.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = AppDelegate.applescript; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				C46EA18626D57E6400BFD926 /* AppDelegate.applescript */,
+				C45EF683272A0B21009AD894 /* ServerLaunch.sh */,
 				C46EA18826D57E6400BFD926 /* Assets.xcassets */,
 				C4A57F5426E62E5100B4E5AF /* MCServerApp.zip */,
 				C46EA18226D57E6400BFD926 /* Frameworks */,
@@ -144,6 +147,7 @@
 				C46EA1BE26D842D100BFD926 /* MCServer.png in Resources */,
 				C46EA18926D57E6400BFD926 /* Assets.xcassets in Resources */,
 				C46EA18C26D57E6500BFD926 /* MainMenu.xib in Resources */,
+				C45EF684272A0B21009AD894 /* ServerLaunch.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,7 +296,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.8;
+				CURRENT_PROJECT_VERSION = 1.8.1;
 				DEVELOPMENT_TEAM = AHT4F9P2L4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = "";
@@ -302,7 +306,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.8.1;
 				OSACOMPILE_EXECUTE_ONLY = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -317,7 +321,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.8;
+				CURRENT_PROJECT_VERSION = 1.8.1;
 				DEVELOPMENT_TEAM = AHT4F9P2L4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = "";
@@ -327,7 +331,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.8.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OSACOMPILE_EXECUTE_ONLY = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";

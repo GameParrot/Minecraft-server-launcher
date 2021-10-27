@@ -1017,7 +1017,7 @@ Gw
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" selectable="YES" alignment="left" id="lb4-7k-xvu">
                             <font key="font" usesAppearanceFont="YES"/>
-                            <mutableString key="title">UIElement - If enabled, server will appear as a window but not on the dock.
+                            <string key="title">UIElement - If enabled, server will appear as a window but not on the dock.
 No GUI - If enabled, server will open with Terminal.
 Rename - Renames the server.
 Change icon - Changes the dock icon and icon in menus for the server.
@@ -1027,7 +1027,7 @@ Change version - Changes the server version.
 Delete server - Deletes the server.
 Reset server.properties - Deletes the server.properties file.
 JVM args - Additional JVM arguments such as -Xmx&lt;size&gt;
-Additional server args - server arguments such as --port</mutableString>
+Additional server args - server arguments such as --port</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>

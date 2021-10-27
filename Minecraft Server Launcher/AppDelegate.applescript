@@ -471,7 +471,7 @@ script AppDelegate
             set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & mainclass
             
             do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
-                    $HOME'" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & jvmargs & " " & classPath & " " & serverargs & "> /dev/null 2>&1 & "
+                    '" & the POSIX Path of (path to current application as text) & "Contents/Resources/ServerLaunch.sh' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & jvmargs & " " & classPath & " " & serverargs & "> /dev/null 2>&1 & "
         end try
         NSLog("Launched server: " & theName)
     end launchserver
