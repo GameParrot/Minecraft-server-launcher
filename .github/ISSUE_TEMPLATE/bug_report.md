@@ -26,7 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **macOS Version Number**
  - Ex: 12.0.1
 
-**Minecraft version if applicable**
+**Minecraft server version if applicable**
 - Ex: 1.17.1
 
 **Additional context**
