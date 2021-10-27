@@ -1,4 +1,2 @@
 New features:
-- Edit JVM arguments
-- Edit server arguments
-- Bring server window to front option
+- Error message shown if GUI server fails to launch
