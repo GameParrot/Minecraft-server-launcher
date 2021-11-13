@@ -1,2 +1,1 @@
-New features:
-- Error message shown if GUI server fails to launch
+Fixed bug: Unable to use pre-releases
