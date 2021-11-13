@@ -309,7 +309,7 @@ script AppDelegate
         set theSupportedVersions to {}
         repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
             try
-                set majorVersion to item 2 of splitText(i, ".")
+                set majorVersion to item 1 of splitText(item 2 of splitText(i, "."), "-")
                 if (majorVersion as number) > 12 then
                     set end of theSupportedVersions to (i as text)
                 end if
@@ -574,7 +574,7 @@ script AppDelegate
             set theSupportedVersions to {} -- Gets all the supported versions
             repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
                 try
-                    set majorVersion to item 2 of splitText(i, ".")
+                    set majorVersion to item 1 of splitText(item 2 of splitText(i, "."), "-")
                     if (majorVersion as number) > 12 then
                         set end of theSupportedVersions to (i as text)
                     end if
