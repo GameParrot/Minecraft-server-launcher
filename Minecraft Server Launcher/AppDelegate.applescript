@@ -47,6 +47,7 @@ script AppDelegate
     property theVersionChooser : missing value
     property theJVMArg : missing value
     property theServerArg : missing value
+    property theColorCodeWindow : missing value
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -54,6 +55,14 @@ script AppDelegate
         set AppleScript's text item delimiters to ""
         return theTextItems
     end splitText
+    on findAndReplaceInText(theText, theSearchString, theReplacementString) -- the findAndReplaceInText function is used for fixing MC-2215
+        set AppleScript's text item delimiters to theSearchString
+        set theTextItems to every text item of theText
+        set AppleScript's text item delimiters to theReplacementString
+        set theText to theTextItems as string
+        set AppleScript's text item delimiters to ""
+        return theText
+    end findAndReplaceInText
     on getPositionOfItemInList(theItem, theList)
         repeat with a from 1 to count of theList
             if item a of theList is theItem then return a
@@ -602,7 +611,7 @@ script AppDelegate
         set theS to theSavedText as text
         do shell script "rm $HOME/'Library/Application Support/Minecraft Server/installations/" & theSerProName's stringValue & "/server.properties'" -- Deletes the existing server.properties
         repeat with ii in (paragraphs of theS)
-        do shell script "echo '" & ii & "' >> $HOME/'Library/Application Support/Minecraft Server/installations/" & theSerProName's stringValue & "/server.properties'" -- Creates the new server.properties
+        do shell script "echo '" & findAndReplaceInText(ii, "§", "\\u00A7") & "' >> $HOME/'Library/Application Support/Minecraft Server/installations/" & theSerProName's stringValue & "/server.properties'" -- Creates the new server.properties
         end repeat
         NSLog("Saved server.properties")
         set theSerEdit's isVisible to false -- Hides the server.properties window
@@ -668,7 +677,7 @@ script AppDelegate
             set theProperties to (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/server.properties'") -- Reads the current server.properties
             set theSerEdit's isVisible to true -- Shows the server.properties editor window
             set theSerEdit's title to "Editing server.properties for " & theName  -- Sets the window title
-            theSerText's setString:theProperties -- Sets the text displayed in the server.properties editor too the server.properties file contents
+            theSerText's setString:findAndReplaceInText(theProperties, "\\u00A7", "§") -- Sets the text displayed in the server.properties editor too the server.properties file contents
             set theSerProName's stringValue to theName
         on error
             display alert "Error: server.properties not found." message "Try launching the server." as critical
@@ -736,4 +745,7 @@ script AppDelegate
         display alert "Are you sure you want to reset the server.properties?" buttons {"Cancel", "Reset"} cancel button "Cancel" -- Asks if you want to delete the server properties file
         do shell script "rm $HOME'/Library/Application Support/Minecraft Server/installations/" & theName & "/server.properties'"
     end resetproperties_
+    on showcolorcodes_(sender)
+        set theColorCodeWindow's isVisible to true
+    end showcolorcodes_
 end script
