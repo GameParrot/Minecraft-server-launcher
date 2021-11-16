@@ -173,8 +173,8 @@ script AppDelegate
                 do shell script "ls $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app'"
             on error
                 do shell script "unzip '" & the POSIX path of (path to current application) & "Contents/Resources/MCServerApp.zip' -d $HOME'/Library/Application Support/Minecraft Server'"
-                do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
-                do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
+                do shell script "ln -s '../../../../minecraft/runtime/java-runtime-beta/mac-os/java-runtime-beta/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+                do shell script "ln -s '../../../../minecraft/runtime/java-runtime-beta/mac-os/java-runtime-beta/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
             end try
             try
             set args to (current application's NSProcessInfo's processInfo()'s arguments())
@@ -305,8 +305,8 @@ script AppDelegate
         do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/info'"
         do shell script "mkdir $HOME/'Library/Application Support/Minecraft Server/installations'"
         do shell script "unzip '" & the POSIX path of (path to current application) & "Contents/Resources/MCServerApp.zip' -d $HOME'/Library/Application Support/Minecraft Server'"
-        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
-        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
+        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-beta/mac-os/java-runtime-beta/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-beta/mac-os/java-runtime-beta/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
     end iagree_
     on showCreateUI()
         theNewVersion's removeAllItems()
@@ -736,8 +736,8 @@ script AppDelegate
     on resetjavaexec_(sender)
         do shell script "rm $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
         do shell script "rm $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
-        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
-        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-alpha/mac-os/java-runtime-alpha/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
+        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-beta/mac-os/java-runtime-beta/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/MacOS/Minecraft Server'"
+        do shell script "ln -s '../../../../minecraft/runtime/java-runtime-beta/mac-os/java-runtime-beta/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
         set theJavaExecWindow's isVisible to false
     end resetjavaexec_
     on resetproperties_(sender)
