@@ -1,3 +1,1 @@
-Updated to using Java 17 by default for 1.18. 
-This means that you will need to launch Minecraft 1.18 pre release 2 or newer in the official launcher.
-You may also need to go to Preferences and click Reset Java executable if servers do not start.
+Fixed a bug where JVM and server arguments would not reset correctly.
