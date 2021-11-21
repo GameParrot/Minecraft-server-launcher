@@ -573,6 +573,8 @@ script AppDelegate
         set theEditWindow's title to "Editing " & theName
         set theServerEditing's stringValue to theName
         set theRenameField's stringValue to theName
+        set theJVMArg's stringValue to ""
+        set theServerArg's stringValue to ""
         try
             set theJVMArg's stringValue to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/jvmargs'"
         end try
