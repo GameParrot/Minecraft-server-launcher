@@ -15,12 +15,12 @@ You need to have launched the version you plan on using for your server at least
 If you want to build this using Xcode, make sure to set the development team before building, or else it will fail.
 # Screenshots:
 Main screen in light mode:
-![lightscreenshot1](https://user-images.githubusercontent.com/85067619/144342527-6cf19f87-f0e2-4ae7-8aba-a7aa6030febd.jpg)
-![lightscreenshot2](https://user-images.githubusercontent.com/85067619/144342524-e34854be-9a1c-4479-988a-60913fdb9690.jpg)
+![lightscreenshot1](https://user-images.githubusercontent.com/85067619/144342840-5adda6f7-f243-46db-a8f4-d1b31759bc3f.jpg)
+![lightscreenshot2](https://user-images.githubusercontent.com/85067619/144342841-c8004c80-8b13-4d97-8879-86be944df6fb.jpg)
 
 Main screen in dark mode:
-![darkscreenshot1](https://user-images.githubusercontent.com/85067619/144342525-662f31b5-9407-4238-85f5-9996c37194ea.jpg)
-![darkscreenshot2](https://user-images.githubusercontent.com/85067619/144342523-17abdb78-7986-484f-a926-7b6dc7e7d74f.jpg)
+![darkscreenshot1](https://user-images.githubusercontent.com/85067619/144342838-6825ed5f-16dd-4a4f-9936-2608b895190a.jpg)
+![darkscreenshot2](https://user-images.githubusercontent.com/85067619/144342839-a0be79dd-ee3a-416c-902b-b81ce71ae8a5.jpg)
 
 Server running:
 ![running](https://user-images.githubusercontent.com/85067619/131271655-ca55bc95-cbaa-4fa0-b2d1-a41301625ff0.jpg)
