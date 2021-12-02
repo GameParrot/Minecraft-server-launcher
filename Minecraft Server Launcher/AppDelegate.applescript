@@ -331,6 +331,8 @@ script AppDelegate
                 end try
             end try
         end repeat
+        set beginning of theSupportedVersions to "Latest snapshot"
+        set beginning of theSupportedVersions to "Latest release"
         theNewVersion's addItemsWithTitles:theSupportedVersions -- Sets the version chooser list to all of the versions
     end showCreateUI
     on hideCreateUI()
@@ -417,6 +419,21 @@ script AppDelegate
         set classPath to ""
         try
             set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'" -- Gets the version to launch
+            if theVersion is "Latest release" then
+                try
+                    set theVersion to item 1 of splitText(item 2 of splitText(do shell script "curl -L 'https://launchermeta.mojang.com/mc/game/version_manifest.json'", "\"release\": \""), "\"")
+                on error
+                    display alert "Could not get latest release" message "Check your internet connection and try again"
+
+                end try
+            end if
+            if theVersion is "Latest snapshot" then
+                try
+                    set theVersion to item 1 of splitText(item 2 of splitText(do shell script "curl -L 'https://launchermeta.mojang.com/mc/game/version_manifest.json'", "\", \"snapshot\": \""), "\"")
+                on error
+                    display alert "Could not get latest snapshot" message "Check your internet connection and try again"
+                end try
+            end if
             set majorVersion to item 2 of splitText(theVersion, ".")
             if (majorVersion as number) < 16 then
                 set mainclass to "net.minecraft.server.MinecraftServer"
@@ -598,6 +615,8 @@ script AppDelegate
                     end try
                 end try
             end repeat
+            set beginning of theSupportedVersions to "Latest snapshot"
+            set beginning of theSupportedVersions to "Latest release"
             theVersionChooser's removeAllItems()
             theVersionChooser's addItemsWithTitles:theSupportedVersions
             set theCurrentVersion to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
