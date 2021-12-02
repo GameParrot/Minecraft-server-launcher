@@ -1,1 +1,4 @@
-Fixed a bug where JVM and server arguments would not reset correctly.
+New features:
+- New background for 1.18
+- Ability to use latest release and latest snapshot as version
+- Improved About window
