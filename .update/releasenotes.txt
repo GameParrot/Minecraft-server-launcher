@@ -1,1 +1,1 @@
-Fixed an issue with latest release / latest snapshot if there is no internet.
+Improved order of versions
