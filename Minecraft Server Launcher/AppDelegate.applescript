@@ -315,20 +315,21 @@ script AppDelegate
         hideButtons()
         theNewCancel's setHidden:false
         theNewCreate's setHidden:false
-        set theSupportedVersions to {}
+        set theSupportedVersions to {} -- Gets all the supported versions
+        repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
+            try
+                set majorVersion to item 1 of splitText(i, "w")
+                if (majorVersion as number) > 17 then
+                    set beginning of theSupportedVersions to (i as text)
+                end if
+            end try
+        end repeat
         repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
             try
                 set majorVersion to item 1 of splitText(item 2 of splitText(i, "."), "-")
                 if (majorVersion as number) > 12 then
-                    set end of theSupportedVersions to (i as text)
+                    set beginning of theSupportedVersions to (i as text)
                 end if
-            on error
-                try
-                    set majorVersion to item 1 of splitText(i, "w")
-                    if (majorVersion as number) > 17 then
-                        set end of theSupportedVersions to (i as text)
-                    end if
-                end try
             end try
         end repeat
         set beginning of theSupportedVersions to "Latest snapshot"
@@ -373,13 +374,13 @@ script AppDelegate
                     try
                         set majorVersion to item 2 of splitText(i, ".")
                         if (majorVersion as number) > 12 then
-                            set end of theSupportedVersions to (i as text)
+                            set beginning of theSupportedVersions to (i as text)
                         end if
                     on error
                         try
                             set majorVersion to item 1 of splitText(i, "w")
                             if (majorVersion as number) > 17 then
-                                set end of theSupportedVersions to (i as text)
+                                set beginning of theSupportedVersions to (i as text)
                             end if
                         end try
                     end try
@@ -603,17 +604,18 @@ script AppDelegate
             set theSupportedVersions to {} -- Gets all the supported versions
             repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
                 try
+                    set majorVersion to item 1 of splitText(i, "w")
+                    if (majorVersion as number) > 17 then
+                        set beginning of theSupportedVersions to (i as text)
+                    end if
+                end try
+            end repeat
+            repeat with i in paragraphs of (do shell script "ls '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions\"") & "'")
+                try
                     set majorVersion to item 1 of splitText(item 2 of splitText(i, "."), "-")
                     if (majorVersion as number) > 12 then
-                        set end of theSupportedVersions to (i as text)
+                        set beginning of theSupportedVersions to (i as text)
                     end if
-                on error
-                    try
-                        set majorVersion to item 1 of splitText(i, "w")
-                        if (majorVersion as number) > 17 then
-                            set end of theSupportedVersions to (i as text)
-                        end if
-                    end try
                 end try
             end repeat
             set beginning of theSupportedVersions to "Latest snapshot"
