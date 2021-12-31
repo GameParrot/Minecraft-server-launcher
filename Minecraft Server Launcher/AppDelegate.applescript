@@ -460,19 +460,26 @@ script AppDelegate
             end try
         end try
         -- Gets the classpath from the json
+        set theApppath to the POSIX path of (do shell script "echo '" & (path to current application as text) & "'")
         NSLog("Getting classpath from json")
         set theText to splitText((item 2 of splitText(do shell script "cat $HOME'/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".json'", "\"libraries\": ")), "{\"artifact\": {\"path\": \"")
         repeat with i in theText
             set repeatIndex to repeatIndex + 1
             if repeatIndex < (length of theText) then
                 if cpCount is greater than 0 then
-                    set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"")
+                    set theClassAdd to (item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\""))
+                    if theClassAdd does not contain "log4j" and theClassAdd does not contain "lwjgl"
+                        set classPath to classPath & theClassAdd
+                    end if
                 else
                     set cpCount to cpCount + 1
                 end if
             else
                 set classPath to classPath & item 1 of splitText(i, "\", \"") & ":" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/versions/" & theVersion & "/" & theVersion & ".jar\"")
             end if
+        end repeat
+        repeat with i in paragraphs of (do shell script "ls '" & theApppath & "Contents/Resources/log4j_patch'") -- patch for log4j exploit
+        set classpath to classpath & ":" & theApppath & "Contents/Resources/log4j_patch/" & i
         end repeat
         -- Checks settings and launches the server
         try

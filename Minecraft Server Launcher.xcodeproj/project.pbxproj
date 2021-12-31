@@ -16,6 +16,7 @@
 		C46EA1BA26D5C5B900BFD926 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46EA1B926D5C5B900BFD926 /* WebKit.framework */; };
 		C46EA1BE26D842D100BFD926 /* MCServer.png in Resources */ = {isa = PBXBuildFile; fileRef = C46EA1BD26D842D100BFD926 /* MCServer.png */; };
 		C4A57F5526E62E5200B4E5AF /* MCServerApp.zip in Resources */ = {isa = PBXBuildFile; fileRef = C4A57F5426E62E5100B4E5AF /* MCServerApp.zip */; };
+		C4ABE1F5277E841700403D34 /* log4j_patch in Resources */ = {isa = PBXBuildFile; fileRef = C4ABE1F4277E841700403D34 /* log4j_patch */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		C46EA1B926D5C5B900BFD926 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C46EA1BD26D842D100BFD926 /* MCServer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MCServer.png; sourceTree = "<group>"; };
 		C4A57F5426E62E5100B4E5AF /* MCServerApp.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = MCServerApp.zip; sourceTree = "<group>"; };
+		C4ABE1F4277E841700403D34 /* log4j_patch */ = {isa = PBXFileReference; lastKnownFileType = folder; name = log4j_patch; path = "../../../../../../Users/deskeran/Documents/apache-log4j-2.17.1-bin/log4j_patch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				C46EA18626D57E6400BFD926 /* AppDelegate.applescript */,
+				C4ABE1F4277E841700403D34 /* log4j_patch */,
 				C45EF683272A0B21009AD894 /* ServerLaunch.sh */,
 				C46EA18826D57E6400BFD926 /* Assets.xcassets */,
 				C4A57F5426E62E5100B4E5AF /* MCServerApp.zip */,
@@ -145,6 +148,7 @@
 			files = (
 				C4A57F5526E62E5200B4E5AF /* MCServerApp.zip in Resources */,
 				C46EA1BE26D842D100BFD926 /* MCServer.png in Resources */,
+				C4ABE1F5277E841700403D34 /* log4j_patch in Resources */,
 				C46EA18926D57E6400BFD926 /* Assets.xcassets in Resources */,
 				C46EA18C26D57E6500BFD926 /* MainMenu.xib in Resources */,
 				C45EF684272A0B21009AD894 /* ServerLaunch.sh in Resources */,
@@ -296,7 +300,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2.0.2;
+				CURRENT_PROJECT_VERSION = 2.0.3;
 				DEVELOPMENT_TEAM = AHT4F9P2L4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = "";
@@ -306,7 +310,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3;
 				OSACOMPILE_EXECUTE_ONLY = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -321,7 +325,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2.0.2;
+				CURRENT_PROJECT_VERSION = 2.0.3;
 				DEVELOPMENT_TEAM = AHT4F9P2L4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = "";
@@ -331,7 +335,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3;
 				ONLY_ACTIVE_ARCH = NO;
 				OSACOMPILE_EXECUTE_ONLY = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gameparrot.Minecraft-Server-Launcher";
