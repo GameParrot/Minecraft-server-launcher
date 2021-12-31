@@ -13,6 +13,8 @@ You can also edit a server using the command line with -edit. Example: ```open -
 You need to have launched the version you plan on using for your server at least once in the vanilla launcher because it loads the server class file from the vanilla client JAR file. It also gets the required class path from the JSON file. Because you cannot launch the server from the client JAR file directly on versions older than 1.13, it only supports 1.13 and newer. You do not need to have Java installed because it uses the version bundled with Minecraft (you do need to launch Minecraft 1.18 or newer at least once for it to download the right version of Java).
 # Building from source:
 If you want to build this using Xcode, make sure to set the development team before building, or else it will fail.
+# Log4j_patch folder
+The Log4j_patch folder contains the files for log4j 2.17.1. This is to fix the log4j security vulnerability.
 # Screenshots:
 Main screen in light mode:
 ![lightscreenshot1](https://user-images.githubusercontent.com/85067619/144342840-5adda6f7-f243-46db-a8f4-d1b31759bc3f.jpg)
