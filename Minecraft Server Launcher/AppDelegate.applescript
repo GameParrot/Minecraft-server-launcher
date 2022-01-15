@@ -48,6 +48,7 @@ script AppDelegate
     property theJVMArg : missing value
     property theServerArg : missing value
     property theColorCodeWindow : missing value
+    property theCustomMain : missing value
     -- the splitText function is used for getting the classpath from the json file.
     on splitText(theText, theDelimiter)
         set AppleScript's text item delimiters to theDelimiter
@@ -459,6 +460,10 @@ script AppDelegate
                 set mainclass to "net.minecraft.server.Main"
             end try
         end try
+        try
+            do shell script "test -f $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/customclass'"
+            set mainclass to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/customclass'"
+        end try
         -- Gets the classpath from the json
         set theApppath to the POSIX path of (do shell script "echo '" & (path to current application as text) & "'")
         NSLog("Getting classpath from json")
@@ -494,19 +499,19 @@ script AppDelegate
         end try
         try
             do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/nogui'"
-            set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & mainclass
+            set classPath to "-cp '\\''" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "'\\'' " & jvmargs & " " & mainclass
             
             do shell script "echo '#!/bin/zsh
             cd $HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "'\\''
             rm /tmp/serverlaunch
-                    exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & jvmargs & " " & classPath & " nogui " & serverargs & "' > /tmp/serverlaunch"
+                    exec $HOME'\\''" & "/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'\\'' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='\\''MC Server: " & theName & "'\\'' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'\\''Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png'\\'' " & classPath & " nogui " & serverargs & "' > /tmp/serverlaunch"
                     do shell script "chmod +x /tmp/serverlaunch
                     open /tmp/serverlaunch -F -b com.apple.Terminal"
         on error
-            set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & mainclass
+            set classPath to "-cp '" & (do shell script "echo \"$HOME/Library/Application Support/minecraft/libraries/\"") & classPath & "' " & jvmargs & " " & mainclass
             
             do shell script "cd $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "'
-                    '" & the POSIX Path of (path to current application as text) & "Contents/Resources/ServerLaunch.sh' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & jvmargs & " " & classPath & " " & serverargs & "> /dev/null 2>&1 & "
+                    '" & the POSIX Path of (path to current application as text) & "Contents/Resources/ServerLaunch.sh' " & (do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/uielement'") & " -Xdock:name='MC Server: " & theName & "' -Dapple.awt.application.appearance=system -Xdock:icon=$HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/icon.png' " & classPath & " " & serverargs & "> /dev/null 2>&1 & "
         end try
         NSLog("Launched server: " & theName)
     end launchserver
@@ -601,11 +606,15 @@ script AppDelegate
         set theRenameField's stringValue to theName
         set theJVMArg's stringValue to ""
         set theServerArg's stringValue to ""
+        set theCustomMain's stringValue to ""
         try
             set theJVMArg's stringValue to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/jvmargs'"
         end try
         try
             set theServerArg's stringValue to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/serverargs'"
+        end try
+        try
+            set theCustomMain's stringValue to do shell script "cat $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/customclass'"
         end try
         try
             set theSupportedVersions to {} -- Gets all the supported versions
@@ -771,6 +780,15 @@ script AppDelegate
         do shell script "ln -s '../../../../minecraft/runtime/java-runtime-beta/mac-os/java-runtime-beta/jre.bundle/Contents/Home/bin/java' $HOME'/Library/Application Support/Minecraft Server/Minecraft Server.app/Contents/Resources/Minecraft Server'"
         set theJavaExecWindow's isVisible to false
     end resetjavaexec_
+    on setmainclass_(sender)
+        set theName to theServerEditing's stringValue
+        set newClass to theCustomMain's stringValue as text
+        if newClass is "" then
+            do shell script "rm $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/customclass'"
+        else
+            do shell script "echo '" & newClass & "' > $HOME/'Library/Application Support/Minecraft Server/installations/" & theName & "/customclass'"
+        end if
+    end setmainclass_
     on resetproperties_(sender)
         set theName to theServerEditing's stringValue
         display alert "Are you sure you want to reset the server.properties?" buttons {"Cancel", "Reset"} cancel button "Cancel" -- Asks if you want to delete the server properties file
