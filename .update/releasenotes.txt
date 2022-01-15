@@ -1,1 +1,1 @@
-Fixed security issue
+Added ability to change main class, making mods possible.
