@@ -446,6 +446,14 @@ script AppDelegate
         on error
             try
                 set theVersion to do shell script "cat $HOME'/Library/Application Support/Minecraft Server/info/" & theName & ".txt'"
+              if theVersion is "Latest snapshot" then
+                  try
+                       set theVersion to item 1 of splitText(item 2 of splitText(do shell script "curl -L 'https://launchermeta.mojang.com/mc/game/version_manifest.json'", "\", \"snapshot\": \""), "\"")
+                   on error the error_message
+                       display alert "Could not get latest snapshot" message "Check your internet connection and try again"
+                        error error_message
+                 end try
+               end if
                 set majorVersion to item 1 of splitText(theVersion, "w")
                 if (majorVersion as number) < 20 then
                     set mainclass to "net.minecraft.server.MinecraftServer"
