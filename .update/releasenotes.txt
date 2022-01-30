@@ -1,1 +1,1 @@
-Added ability to change main class, making mods possible.
+Fixed Latest snapshot not working
